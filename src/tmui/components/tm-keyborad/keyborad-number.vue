@@ -10,9 +10,9 @@
 		_class="flex flex-col"
 		paren-class="flex-1"
 	>
-		<view class="flex-center flex-row" style="height: 62rpx">
-			<tm-text v-if="!_value && !props.showInputContent" :font-size="28" _class="text-weight-b" :label="props.title"> </tm-text>
-			<tm-text v-if="_value && props.showInputContent" :font-size="34" _class="text-weight-b pr-24" :label="_value"> </tm-text>
+		<view class="flex-center flex-row" style="height: 20rpx">
+			<tm-text v-if="!_value && !props.showInputContent && false" :font-size="28" _class="text-weight-b" :label="props.title"> </tm-text>
+			<tm-text v-if="_value && props.showInputContent && false" :font-size="34" _class="text-weight-b pr-24" :label="_value"> </tm-text>
 		</view>
 		<view>
 			<tm-row :column="7" align="start">

@@ -367,7 +367,7 @@ onLoad(() => {
 			adUnitId: 'adunit-197d1e1914ce88ec',
 		})
 		interstitialAd.onLoad(() => {})
-		interstitialAd.onError((err: any) => {})
+		interstitialAd.onError(() => {})
 		interstitialAd.onClose(() => {})
 	}
 	// 在适合的场景显示插屏广告

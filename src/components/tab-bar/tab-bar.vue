@@ -24,10 +24,11 @@
 </template>
 
 <script setup lang="ts">
-import { useActive } from './useActive'
 import tmTabbar from '@/tmui/components/tm-tabbar/tm-tabbar.vue'
 import tmTabbarItem from '@/tmui/components/tm-tabbar-item/tm-tabbar-item.vue'
 import { getThemeColor } from '@/utils/theme'
+import { useAppStore } from "@/store/app";
+import { computed } from 'vue';
 
 interface navType {
 	name?: string
@@ -47,7 +48,7 @@ const navList: navType[] = [
 		key: 0,
 	},
 	{
-		name: '图表',
+		name: '统计',
 		icon: 'tmicon-border-bottom',
 		key: 1,
 	},
@@ -72,8 +73,28 @@ const navList: navType[] = [
 		key: 3,
 	},
 ]
-// console.log(path)
-const { active, changeActive } = useActive()
+
+const emit = defineEmits<{
+	(e: 'add', value: any): void
+}>()
+
+const useApp = useAppStore();
+const active = computed({
+	get() {
+		return useApp.$state.tabarActive;
+	},
+	set() {
+		// useApp.changeTabarActive(value);
+	}
+});
+
+const changeActive = (name: number) => {
+	if (name === 2) {
+		emit('add', '')
+		return
+	}
+	useApp.changeTabarActive(name);
+};
 </script>
 
 <style lang="scss" scoped></style>

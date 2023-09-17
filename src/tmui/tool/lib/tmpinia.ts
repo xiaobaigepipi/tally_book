@@ -108,6 +108,7 @@ export const useTmpiniaStore = defineStore('tmpinia', {
 		},
 		//添加一个主题
 		setTmVuetifyAddTheme(colorName:string,color:string,isSet=true) {
+			// console.log(this.tmStore.colorList)
 			this.tmStore = {
 				...this.tmStore,
 				colorList: themeObj.add(colorName,color)
