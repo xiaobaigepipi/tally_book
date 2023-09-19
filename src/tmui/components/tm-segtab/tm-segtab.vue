@@ -54,7 +54,8 @@
 						width: leftWidth + 'px',
 						height: wh.innerHieghtWeb,
 						top: `${props.gutter}rpx`,
-						left:'0px'
+						left:'0px',
+						position: 'absolute'
 					}
 				]"
 			>
