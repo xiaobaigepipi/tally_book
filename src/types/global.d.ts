@@ -7,17 +7,3 @@ interface requestOptionsType<T = any> {
 	baseUrl?: string,
 }
 
-interface uniResponseType {
-	data?: responseType | string | AnyObject,
-	statusCode?:number,
-	header?: object
-	cookies?: any,
-	errMsg?: string,
-	errno?: number
-}
-
-interface responseType<T = any> {
-  data: T
-  message: string | null
-  code: number
-}

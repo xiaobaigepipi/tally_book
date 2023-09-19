@@ -26,6 +26,15 @@
 				"titlePenetrate": "YES",
 				"transparentTitle": "always"
 			}
+		},
+		{
+			"path": "pages/addPage/index",
+			"style": {
+				"navigationBarTitleText": "记账",
+				"navigationStyle": "custom",
+				"titlePenetrate": "YES",
+				"transparentTitle": "always"
+			}
 		}
 	],
 	"subPackages": [],

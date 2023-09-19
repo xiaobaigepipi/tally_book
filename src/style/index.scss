@@ -1,0 +1,13 @@
+.text-red{
+	color: $tm-red !important;
+}
+.text-green{
+	color: $tm-green !important;
+}
+.text-gray{
+	color: $tm-gray !important;
+}
+.image-dark{
+	-webkit-filter: brightness(30%); /*考虑浏览器兼容性：兼容 Chrome, Safari, Opera */
+  filter: brightness(30%);
+}

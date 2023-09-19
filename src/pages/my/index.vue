@@ -1,37 +1,37 @@
 <template>
 	<tm-navbar title="我的" :followTheme="false" hideHome> </tm-navbar>
-	<tm-sheet :margin="[18, 18]" :padding="[10, 10]" :round="2">
+	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="2">
 		<tm-cell
 			showAvatar
-			avatar="https://picsum.photos/200"
-			rightText="点击修改"
+			avatar="/static/logo.png"
+			rightText=""
 			:margin="[0, 0]"
-			:titleFontSize="30"
-			title="头像"
+			:titleFontSize="28"
+			title="昵称"
 			:rightTextSize="28"
 			:border="1"
 		>
 		</tm-cell>
-		<tm-cell :rightTextSize="28" :border="1" :margin="[0, 0]" :titleFontSize="30" title="电话" rightText="18577575564">
+		<tm-cell :rightTextSize="28" :border="1" :margin="[0, 0]" :titleFontSize="28" title="电话" rightText="18577575564">
 		</tm-cell>
-		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="30" title="注册日期"  rightText="2023-08-09"> </tm-cell>
+		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="注册日期"  rightText="2023-08-09"> </tm-cell>
 	</tm-sheet>
 
-	<tm-sheet :margin="[18, 18]" :padding="[10, 10]" :round="2">
-		<tm-cell :rightTextSize="28" :border="1" :margin="[0, 0]" :titleFontSize="30" title="分类管理"></tm-cell>
-		<tm-cell :rightTextSize="28" :margin="[0, 0]" :border="1" :titleFontSize="30" title="账本管理"> </tm-cell>
-		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="30" title="资产管理"> </tm-cell>
+	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="2">
+		<tm-cell :rightTextSize="28" :border="1" :margin="[0, 0]" :titleFontSize="28" title="分类管理"></tm-cell>
+		<tm-cell :rightTextSize="28" :margin="[0, 0]" :border="1" :titleFontSize="28" title="账本管理"> </tm-cell>
+		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="资产管理"> </tm-cell>
 	</tm-sheet>
 
-	<tm-sheet :margin="[18, 18]" :padding="[10, 10]" :round="2">
-		<tm-cell :rightTextSize="28" :margin="[0, 0]" :border="1" :titleFontSize="30" title="主题设置" @click="showWin = true"> </tm-cell>
-		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="30" title="暗黑模式">
+	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="2">
+		<tm-cell :rightTextSize="28" :margin="[0, 0]" :border="1" :titleFontSize="28" title="主题设置" @click="showWin = true"> </tm-cell>
+		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="暗黑模式">
 			<template v-slot:right>
 				<tm-switch text :label="['开', '关']" :default-value="isDark" v-model="isDark" @change="onChangeDark"></tm-switch>
 			</template>
 		</tm-cell>
 	</tm-sheet>
-	<view class="tw-m-[18rpx] tw-mt-5">
+	<view class="tw-m-[32rpx] tw-mt-5">
 		<tm-button block label="退出"></tm-button>
 	</view>
 	<tm-drawer ref="calendarView" placement="bottom" v-model:show="showWin" :round="3" okText="确认" @ok="changeTheme">

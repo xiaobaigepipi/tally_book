@@ -3,6 +3,7 @@ import './style/tailwindcss.css'
 import * as Pinia from 'pinia';
 import tmui from "./tmui"
 import App from "./App.vue";
+import './style/index.scss'
 // #ifdef H5
 import './mock/index'
 // #endif

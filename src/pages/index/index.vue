@@ -1,15 +1,12 @@
 <template>
 	<tm-app>
 		<view v-if="active === 0">
-			<Home></Home>
+			<Home :safe-top="safeTop"></Home>
 		</view>
 
 		<view v-if="active === 4">
 			<My></My>
 		</view>
-
-		<add-page v-model="showAddPage"></add-page>
-		
 		<tab-bar @add="handleShowAddPage"></tab-bar>
 	</tm-app>
 </template>
@@ -21,17 +18,25 @@ import tabBar from '@/components/tab-bar/tab-bar.vue'
 import Home from '../home/index.vue'
 import My from '../my/index.vue'
 import { useAppStore } from '@/store/app'
-import addPage from '../addPage/index.vue'
+import { onLoad } from '@dcloudio/uni-app'
 
+onLoad(() => {
+	safeBottom.value = uni.getSystemInfoSync()?.safeAreaInsets?.bottom || 0
+	safeTop.value = uni.getSystemInfoSync()?.safeAreaInsets?.top || 0
+	console.log(safeTop.value >= 47)
+})
+
+const safeBottom = ref<number>(0);
+const safeTop = ref<number>(0)
 const useApp = useAppStore()
-
 const active = computed(() => {
 	return useApp.$state.tabarActive
 })
-const showAddPage = ref<boolean>(false)
 
 const handleShowAddPage = () => {
-	showAddPage.value = true
+	uni.navigateTo({
+		url: '/pages/addPage/index'
+	})
 }
 </script>
 
