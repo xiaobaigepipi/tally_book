@@ -12,7 +12,7 @@
 				class="tw-z-0 tw-absolute tw-left-0 tw-bottom-0 tw-top-0 tw-right-0 tw-w-full tw-h-[320rpx] tw-rounded"
 				:class="{'image-dark': isDark}"
 			/>
-			<view :style="{'height': (safeTop>=47?safeTop:safeTop>0?47:0) + 'px'}"></view>
+			<view :style="{'height': safeTop + 'px'}"></view>
 			<view class="tw-flex tw-justify-start tw-items-center tw-relative tw-z-10 tw-pt-[30rpx] tw-pb-[30rpx]">
 				<tm-text color="white" :fontSize="36">默认账本</tm-text>
 				<tm-icon :followTheme="false" color="white" class="tw-ml-1 tw-mt-[5rpx]" name="tmicon-waiting-fill" :fontSize="34"></tm-icon>
@@ -30,33 +30,27 @@
 		</view>
 	</tm-sheet>
 
-	<!-- #ifdef MP-WEIXIN -->
-	<view class=" tw-mt-[-90rpx]"></view>
-	<!-- #endif -->
-	<!-- #ifdef H5 -->
-	<view class=" tw-mt-[-180rpx]"></view>
-	<!-- #endif -->
-
+	<view :style="{'margin-top': -(-safeTop + 85) + 'px'}"></view>
 	<view class=" tw-relative tw-z-40">
-		<tm-sheet :margin="[32, 24]" :padding="[50,30]" :round="5" :shadow="10">
+		<tm-sheet :margin="[32, 24]" :padding="[30,30]" :round="5" :shadow="10">
 			<view>
 				<view class=" tw-flex tw-justify-start tw-items-center">
 					<tm-text :fontSize="24" _class="text-gray"> 月结余 </tm-text>
-					<tm-text :fontSize="36" :color="primaryColor" class="tw-font-bold tw-ml-[10rpx]"> ￥6728.90 
+					<tm-text :fontSize="36"  class="tw-font-bold tw-ml-[10rpx]"> ￥6728.90 
 					</tm-text>
 				</view>
 				<view class="tw-flex tw-justify-between tw-items-center tw-mt-[30rpx]">
-					<view class="tw">
+					<view class="tw-flex tw-flex-col tw-items-center">
 						<tm-text :fontSize="24" _class="text-gray"> 月收入</tm-text>
 						<tm-text :fontSize="28" _class="text-red tw-mt-[10rpx]"> ￥12830.83 </tm-text>
 					</view>
-					<view>
+					<view class="tw-flex tw-flex-col tw-items-center">
 						<tm-text :fontSize="24"  _class="text-gray"> 月支出 </tm-text>
 						<tm-text :fontSize="28"  _class="text-green tw-mt-[10rpx]"> ￥6728.90 </tm-text>
 					</view>
-					<view>
+					<view class="tw-flex tw-flex-col tw-items-center">
 						<tm-text :fontSize="24" _class="text-gray"> 月预算 </tm-text>
-						<tm-text :fontSize="28" _class="tw-mt-[10rpx]" :color="primaryColor"> ￥6728.90 </tm-text>
+						<tm-text :fontSize="28" _class="tw-mt-[10rpx]"> ￥6728.90 </tm-text>
 					</view>
 				</view>
 			</view>
@@ -100,11 +94,9 @@ import tmText from '@/tmui/components/tm-text/tm-text.vue'
 import tmSheet from '@/tmui/components/tm-sheet/tm-sheet.vue'
 import tmDivider from '@/tmui/components/tm-divider/tm-divider.vue'
 import { computed, ref } from 'vue'
-import { getThemeColor } from '@/utils/theme'
 import { useTmpiniaStore } from '@/tmui/tool/lib/tmpinia'
 
 const currentDate = ref<string>('2023-09')
-const primaryColor = computed<string>(() => getThemeColor())
 defineProps({
 	safeTop: {
 		type: Number,

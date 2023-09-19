@@ -74,10 +74,6 @@ const navList: navType[] = [
 	},
 ]
 
-const emit = defineEmits<{
-	(e: 'add', value: any): void
-}>()
-
 const useApp = useAppStore();
 const active = computed({
 	get() {
@@ -90,7 +86,10 @@ const active = computed({
 
 const changeActive = (name: number) => {
 	if (name === 2) {
-		emit('add', '')
+		console.log('123')
+		uni.navigateTo({
+			url: '/pages/addPage/index'
+		})
 		return
 	}
 	useApp.changeTabarActive(name);
