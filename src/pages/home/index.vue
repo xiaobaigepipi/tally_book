@@ -34,10 +34,17 @@
 	<view class=" tw-relative tw-z-40">
 		<tm-sheet :margin="[32, 24]" :padding="[30,30]" :round="5" :shadow="10">
 			<view>
-				<view class=" tw-flex tw-justify-start tw-items-center">
-					<tm-text :fontSize="24" _class="text-gray"> 月结余 </tm-text>
-					<tm-text :fontSize="36"  class="tw-font-bold tw-ml-[10rpx]"> ￥6728.90 
-					</tm-text>
+				<view class=" tw-flex tw-justify-around">
+					<view class=" tw-flex tw-justify-center tw-items-center">
+						<tm-text :fontSize="24" _class="text-gray"> 月结余 </tm-text>
+						<tm-text :fontSize="36"  class="tw-font-bold tw-ml-[10rpx]"> ￥6728.90 
+						</tm-text>
+					</view>
+					<view class=" tw-flex tw-justify-center tw-items-center">
+						<tm-text :fontSize="24" _class="text-gray"> 不计收支 </tm-text>
+						<tm-text :fontSize="30"  class="tw-ml-[10rpx]"> ￥728.90 
+						</tm-text>
+					</view>
 				</view>
 				<view class="tw-flex tw-justify-between tw-items-center tw-mt-[30rpx]">
 					<view class="tw-flex tw-flex-col tw-items-center">
@@ -56,6 +63,16 @@
 			</view>
 		</tm-sheet>
 	</view>
+	<tm-sheet :margin="[32, 24]" :round="5">
+		<view>
+			<view class=" tw-flex tw-justify-center">
+				<tm-segtab :round="24" :gutter="4" :height="50" :width="400" color="primary" activeColor="white" :font-size="24" :list="list" defaultValue="2"></tm-segtab>
+			</view>
+			<view class=" tw-flex tw-justify-center">
+				<tm-chart ref="chartDom" :width="660"  :height="400" @onInit="chartInit"></tm-chart>
+			</view>
+		</view>
+	</tm-sheet>
 	<tm-sheet :margin="[32, 24]" :round="5" v-for="(item, index) in dataList" :key="index">
 		<view class="tw-flex tw-justify-between tw-items-center tw-text-sm">
 			<tm-text class="tw-font-bold">{{ item.date }}</tm-text>
@@ -95,6 +112,9 @@ import tmSheet from '@/tmui/components/tm-sheet/tm-sheet.vue'
 import tmDivider from '@/tmui/components/tm-divider/tm-divider.vue'
 import { computed, ref } from 'vue'
 import { useTmpiniaStore } from '@/tmui/tool/lib/tmpinia'
+import tmSegtab from '@/tmui/components/tm-segtab/tm-segtab.vue'
+import tmChart from '@/tmui/components/tm-chart/tm-chart.vue'
+import useBar from './useBar'
 
 const currentDate = ref<string>('2023-09')
 defineProps({
@@ -103,6 +123,12 @@ defineProps({
 		default: 0,
 	},
 })
+
+const list = ref([
+	{ text: '收入', id: '1' },
+	{ text: '支出', id: '2' },
+	{ text: '不计收支', id: '3' }
+])
 
 const isDark = computed(() => {
 	return useTmpiniaStore().$state.tmStore.dark === true
@@ -121,6 +147,8 @@ const handleSumData = (list: any) => {
 		return '平 ' + sum.toFixed(2)
 	}
 }
+
+const { chartInit }  = useBar();
 
 const dataList = ref<Array<any>>([
 	{

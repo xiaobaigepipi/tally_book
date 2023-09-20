@@ -30,3 +30,7 @@ const getPrimaryColor = (): string => {
 
 	return result;
 }
+
+export const getIsDark = () => {
+	return useTmpiniaStore().$state.tmStore.dark === true
+}

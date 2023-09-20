@@ -8,6 +8,10 @@
 			<Statistic :safe-top="safeTop"></Statistic>
 		</view>
 
+		<view v-if="active === 3">
+			<Amount :safe-top="safeTop"></Amount>
+		</view>
+
 		<view v-if="active === 4">
 			<My></My>
 		</view>
@@ -24,6 +28,7 @@ import My from '../my/index.vue'
 import { useAppStore } from '@/store/app'
 import { onLoad } from '@dcloudio/uni-app'
 import Statistic from '../statistic/index.vue'
+import Amount from '../amount/index.vue'
 
 onLoad(() => {
 	safeBottom.value = uni.getSystemInfoSync()?.safeAreaInsets?.bottom || 0

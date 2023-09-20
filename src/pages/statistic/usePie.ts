@@ -1,33 +1,60 @@
-import tmRowVue from "@/tmui/components/tm-row/tm-row.vue";
 import { ECharts } from "echarts"
 import { ref } from "vue";
 
-const usePie = (data: any) => {
+interface pieType {
+	name?: string
+	value: number
+	itemStyle?: { color? : string}
+}
+
+const data = ref<Array<pieType>>(
+	[
+		{ name: '圣彼得', value: 0.6, itemStyle: {} },
+		{ name: '陀思妥耶夫', value: 1, itemStyle: {} },
+		{ name: '史记精注', value: 0.8, itemStyle: {}},
+		{ name: '加德纳艺术', value: 0.5, itemStyle: {} },
+		{ name: '表象与本质', value: 0.5, itemStyle: {} },
+		{ name: '其它', value: 0.8, itemStyle: {} },
+		{ name: '加德纳', value: 0.5, itemStyle: {} },
+		{ name: '表象', value: 0.5, itemStyle: {} },
+		{ name: '其它2', value: 0.8, itemStyle: {} }
+	]
+)
+
+const usePie = () => {
 	const pieConfig = ref(defaultConfig);
+	const pieData = ref<Array<pieType>>();
 
-	if (data.value && data.value.length > 0) {
-		data.value.forEach((item: any)=> {
-			item.itemStyle = {
-				color: insertColor(),
-			};
-		});
-	}
-	pieConfig.value.series[0].data = data.value
+	async function chartInit(chart: ECharts) {
+		const func = new Promise((resolve) => {
+			setTimeout(() => {
+				resolve(changeColorData(data))
+			}, 200)
+		})
 
-	function chartInit(chart: ECharts) {
-
+		pieData.value = (await func) as Array<pieType>
+		// console.log(pieData.value)
+		pieConfig.value.series[0].data = pieData.value
 		chart.setOption(pieConfig.value)
-		// setTimeout(() => {
-		// 	chartDom.value?.getImg().then((e) => {
-		// 		// 打印图表图片，记得要等动画结束再截取，这里只是演示，具体以你的情况为例做调整。
-		// 		console.log(e)
-		// 	})
-		// }, 200)
+	}
+
+	const changeColorData = (data: any) => {
+		const list: Array<pieType> = [];
+		if (data.value && data.value.length > 0) {
+			data.value.forEach((item: any)=> {
+				item.itemStyle = {
+					color: insertColor(),
+				};
+				list.push(item)
+			});
+		}
+
+		return list;
 	}
 
 	return {
-		pieConfig,
-		chartInit
+		chartInit,
+		pieData
 	}
 }
 
@@ -36,7 +63,6 @@ export default usePie;
 /**
  * 随机颜色生成
  */
-
 const insertColor = () => {
 	const color = ['a','b','c','d','e','f','A','B','C','D','E','0','1','2','3','4','5','6','7','8','9']
     // 三位和六位，都是有用的二进制颜色  设置type为奇数就是3，偶数就是6位
@@ -53,7 +79,7 @@ const insertColor = () => {
     return '#' + ans
 }
 
-const defaultConfig = {
+const defaultConfig: any = {
 	title: {
 		text: '总共\n3403',
 		left: 'center',
@@ -88,12 +114,22 @@ const defaultConfig = {
 				},
 			},
 			labelLine: {
-				show: tmRowVue,
+				show: true,
 				length: 10,
 				length2: 10,
 				maxSurfaceAngle: 80,
 			},
-			data: [],
+			data: [
+				{ name: '圣彼得', value: 0.6, itemStyle: {} },
+				{ name: '陀思妥耶夫', value: 1, itemStyle: {} },
+				{ name: '史记精注', value: 0.8, itemStyle: {}},
+				{ name: '加德纳艺术', value: 0.5, itemStyle: {} },
+				{ name: '表象与本质', value: 0.5, itemStyle: {} },
+				{ name: '其它', value: 0.8, itemStyle: {} },
+				{ name: '加德纳', value: 0.5, itemStyle: {} },
+				{ name: '表象', value: 0.5, itemStyle: {} },
+				{ name: '其它2', value: 0.8, itemStyle: {} }
+			],
 		},
 	],
 }
