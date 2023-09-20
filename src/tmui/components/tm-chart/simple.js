@@ -1,12 +1,33 @@
-import { use } from 'echarts/lib/extension.js';
-export * from 'echarts/lib/export/core.js';
-import { install as CanvasRenderer } from 'echarts/lib/renderer/installCanvasRenderer.js';
-import { install as LineChart } from 'echarts/lib/chart/line/install.js';
-import { install as BarChart } from 'echarts/lib/chart/bar/install.js';
-import { install as PieChart } from 'echarts/lib/chart/pie/install.js';
-import { install as GridSimpleComponent } from 'echarts/lib/component/grid/installSimple.js';
-import { install as AriaComponent } from 'echarts/lib/component/aria/install.js';
-import { install as DatasetComponent } from 'echarts/lib/component/dataset/install.js';
-use([CanvasRenderer]);
-use([LineChart, BarChart, PieChart]);
-use([GridSimpleComponent, AriaComponent, DatasetComponent]);
+import * as echarts from 'echarts/core'
+
+// 引入柱状图图表，图表后缀都为 Chart
+import { BarChart, PieChart } from 'echarts/charts';
+
+// 引入提示框，标题，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
+import {
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DatasetComponent,
+  TransformComponent
+} from 'echarts/components';
+// 标签自动布局、全局过渡动画等特性
+import { LabelLayout, UniversalTransition } from 'echarts/features';
+// 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
+import { CanvasRenderer } from 'echarts/renderers';
+
+// 注册必须的组件
+echarts.use([
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DatasetComponent,
+  TransformComponent,
+  BarChart,
+  PieChart,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer
+]);
+
+export default echarts

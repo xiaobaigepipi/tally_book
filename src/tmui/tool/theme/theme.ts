@@ -80,6 +80,7 @@ function isCssColor(color: string) {
 	return reg1.test(color) || reg2.test(color);
 }
 function getColor(colorName: string) {
+	// console.log(colorName)
 	const list = uni.getStorageSync('colorArrayList');
 	let colorList: Array<colorThemeType> = [];
 	if (list && list.length > 0) {
@@ -95,7 +96,7 @@ function getColor(colorName: string) {
 		isHand = colors.findIndex(function(el, index) {
 			return el.name == colorName;
 		});
-		console.warn('主题中不存在相关名称的主题。');
+		// console.warn('主题中不存在相关名称的主题。');
 	}
 
 
@@ -160,6 +161,7 @@ class themeColors {
 				return el.name == colorName;
 			});
 			console.error('主题中不存在相关名称的主题。');
+			console.log(colorName)
 		}
 
 

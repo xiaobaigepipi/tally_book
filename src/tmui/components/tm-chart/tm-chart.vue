@@ -96,10 +96,9 @@ import {
 } from 'vue';
 import WxCanvas from './canvasinit';
 import mytmcharts from './nvuechart'
-import * as echarts from "echarts";
 import tmText from "../tm-text/tm-text.vue"
 
-// import * as echarts from "./simple";
+import echarts from "./simple.js";
 
 
 const proxy = getCurrentInstance()?.proxy??null;
