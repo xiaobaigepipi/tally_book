@@ -24,19 +24,14 @@
 						@click="handleSelectType(2)"
 						>收入</view
 					>
-					<view
-						class="tw-rounded-sm tw-bg-bg-gray tw-p-[10rpx] tw-pl-[24rpx] tw-pr-[20rpx] tw-mr-1 tw-text-gray-500"
-						:class="{ 'dark-type': isDark, 'select-type-blue': selectType === 3 }"
-						@click="handleSelectType(3)"
-						>不计入收支</view
-					>
 				</view>
 				<view class="tw-text-sm">
 					<view
+					@click="showdate = true"
 						class="tw-bg-bg-gray tw-p-[10rpx] tw-pl-[20rpx] tw-pr-[20rpx] tw-mr-1 tw-flex tw-justify-start tw-items-center tw-rounded-sm"
 						:class="{ 'dark-type': isDark }"
 					>
-						09-18<tm-icon class="tw-ml-1" name="tmicon-angle-down" color="" :fontSize="24"></tm-icon>
+						09-18 22:24<tm-icon class="tw-ml-1" name="tmicon-angle-down" color="" :fontSize="24"></tm-icon>
 					</view>
 				</view>
 			</view>
@@ -52,16 +47,16 @@
 							:color="selectIndex === index ? color: 'white'"
 							:fontColor="selectIndex === index ? color: '#999999'"
 							:follow-theme="false"
-							icon="tmicon-account"
 							:width="90"
 							:round="20"
 							:height="90"
-							:fontSize="40"
+							:fontSize="36"
 							:margin="[0, 8]"
 							:shadow="0"
 							:text="selectIndex === index"
-						></tm-button>
-						<tm-text :font-size="24">三餐</tm-text>
+						>{{ '交通'.substring(0, 1)}}
+					</tm-button>
+						<tm-text :font-size="24">交通</tm-text>
 					</view>
 				</tm-grid-item>
 			</tm-grid>
@@ -82,6 +77,21 @@
 			<view :style="{ height: safeBottom + 'rpx' }"></view>
 		</view>
 	</view>
+	<tm-time-picker
+		:showDetail="{
+			year: true,
+			month: true,
+			day: true,
+			hour: true,
+			minute: true,
+			second: true
+		}"
+		v-model="dateModel"
+		v-model:show="showdate"
+		format="YYYY-MM-DD HH:SS:mm"
+		v-model:model-str="dateValue"
+	>
+	</tm-time-picker>
 </tm-app>
 </template>
 
@@ -97,6 +107,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import tmApp from '@/tmui/components/tm-app/tm-app.vue'
 import tmGridItem from '@/tmui/components/tm-grid-item/tm-grid-item.vue'
 import tmGrid from '@/tmui/components/tm-grid/tm-grid.vue'
+import tmTimePicker from '@/tmui/components/tm-time-picker/tm-time-picker.vue'
 
 onLoad(() => {
 	safeBottom.value = uni.getSystemInfoSync()?.safeAreaInsets?.bottom || 0
@@ -115,6 +126,9 @@ const amountC = computed(() => {
 	console.log(amount.value)
 	return amount.value
 })
+const showdate = ref<boolean>(false);
+const dateValue = ref<string>('');
+const dateModel = ref<string>('')
 
 const isDark = computed(() => {
 	return useTmpiniaStore().$state.tmStore.dark === true

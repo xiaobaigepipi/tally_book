@@ -35,6 +35,15 @@
 				"titlePenetrate": "YES",
 				"transparentTitle": "always"
 			}
+		},
+		{
+			"path": "pages/calendar/index",
+			"style": {
+				"navigationBarTitleText": "日历模式",
+				"navigationStyle": "custom",
+				"titlePenetrate": "YES",
+				"transparentTitle": "always"
+			}
 		}
 	],
 	"subPackages": [],

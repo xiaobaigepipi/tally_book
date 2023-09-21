@@ -1,6 +1,6 @@
 <template>
 	<tm-navbar title="我的" :followTheme="false" hideHome> </tm-navbar>
-	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="2">
+	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="5">
 		<tm-cell
 			showAvatar
 			avatar="/static/logo.png"
@@ -17,13 +17,13 @@
 		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="注册日期"  rightText="2023-08-09"> </tm-cell>
 	</tm-sheet>
 
-	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="2">
+	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="5">
 		<tm-cell :rightTextSize="28" :border="1" :margin="[0, 0]" :titleFontSize="28" title="分类管理"></tm-cell>
 		<tm-cell :rightTextSize="28" :margin="[0, 0]" :border="1" :titleFontSize="28" title="账本管理"> </tm-cell>
 		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="资产管理"> </tm-cell>
 	</tm-sheet>
 
-	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="2">
+	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="5">
 		<tm-cell :rightTextSize="28" :margin="[0, 0]" :border="1" :titleFontSize="28" title="主题设置" @click="showWin = true"> </tm-cell>
 		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="暗黑模式">
 			<template v-slot:right>

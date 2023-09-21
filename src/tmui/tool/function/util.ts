@@ -754,6 +754,7 @@ export function getWindow() : { width : number, height : number, top : number, b
 	// #endif
 
 	let results = { bottom: bottom, height: height, width: sysinfo.windowWidth, top: top, isCustomHeader: isCustomHeader, statusBarHeight: sysinfo.statusBarHeight || 0, sysinfo: sysinfo };
+	
 
 	return results;
 }

@@ -2,10 +2,10 @@
 	<tm-sheet
 		:text="false"
 		:margin="[0, 0]"
-		:padding="[50, 0]"
+		:padding="[0, 0]"
 		:followTheme="false"
 	>
-		<view class="tw-h-[320rpx]">
+		<view class="tw-h-[320rpx] tw-px-[50rpx]">
 			<image
 				src="/static/home-back.jpg"
 				mode="scaleToFill"
@@ -22,42 +22,40 @@
 					<tm-text color="white">{{ currentDate }}</tm-text>
 					<tm-icon :followTheme="false" color="white" class="tw-ml-1" name="tmicon-angle-down" :fontSize="24"></tm-icon>
 				</view>
-				<view class="tw-flex tw-justify-center tw-items-center">
-					<tm-text color="white">日历模式</tm-text>
+				<view class="tw-flex tw-justify-center tw-items-center" @click="toCalendarPage">
+					<tm-text color="white">日历视图</tm-text>
 					<tm-icon :followTheme="false" color="white" class="tw-ml-1" name="tmicon-calendaralt-fill" :fontSize="28"></tm-icon>
 				</view>
 			</view>
 		</view>
 	</tm-sheet>
 
-	<view :style="{'margin-top': -(-safeTop + 85) + 'px'}"></view>
+	<view :style="{'margin-top': -(-safeTop + 95) + 'px'}"></view>
 	<view class=" tw-relative tw-z-40">
 		<tm-sheet :margin="[32, 24]" :padding="[30,30]" :round="5" :shadow="10">
 			<view>
 				<view class=" tw-flex tw-justify-around">
-					<view class=" tw-flex tw-justify-center tw-items-center">
-						<tm-text :fontSize="24" _class="text-gray"> 月结余 </tm-text>
-						<tm-text :fontSize="36"  class="tw-font-bold tw-ml-[10rpx]"> ￥6728.90 
-						</tm-text>
+					<view class=" tw-flex tw-flex-col tw-items-center">
+							<tm-text :fontSize="24" _class="text-gray">月收入</tm-text>
+							<tm-text :fontSize="28"  class="tw-font-bold tw-mt-[10rpx]"> ￥6728.90 </tm-text>
 					</view>
-					<view class=" tw-flex tw-justify-center tw-items-center">
-						<tm-text :fontSize="24" _class="text-gray"> 不计收支 </tm-text>
-						<tm-text :fontSize="30"  class="tw-ml-[10rpx]"> ￥728.90 
+					<view class=" tw-flex tw-flex-col tw-items-center">
+						<tm-text :fontSize="24" _class="text-gray">月支出</tm-text>
+						<tm-text :fontSize="28"  class="tw-mt-[10rpx] tw-font-bold"> ￥728.90 
 						</tm-text>
 					</view>
 				</view>
-				<view class="tw-flex tw-justify-between tw-items-center tw-mt-[30rpx]">
+				<view class="tw-flex tw-justify-around tw-items-center tw-mt-[30rpx]">
 					<view class="tw-flex tw-flex-col tw-items-center">
-						<tm-text :fontSize="24" _class="text-gray"> 月收入</tm-text>
-						<tm-text :fontSize="28" _class="text-red tw-mt-[10rpx]"> ￥12830.83 </tm-text>
+						<tm-text :fontSize="24" _class="text-gray">结余</tm-text>
+						<tm-text :fontSize="28" _class="tw-mt-[10rpx] tw-font-bold"> ￥12830.83 </tm-text>
 					</view>
 					<view class="tw-flex tw-flex-col tw-items-center">
-						<tm-text :fontSize="24"  _class="text-gray"> 月支出 </tm-text>
-						<tm-text :fontSize="28"  _class="text-green tw-mt-[10rpx]"> ￥6728.90 </tm-text>
-					</view>
-					<view class="tw-flex tw-flex-col tw-items-center">
-						<tm-text :fontSize="24" _class="text-gray"> 月预算 </tm-text>
-						<tm-text :fontSize="28" _class="tw-mt-[10rpx]"> ￥6728.90 </tm-text>
+						<view class="tw-flex tw-flex-row tw-items-center">
+							<tm-text :fontSize="24" _class="text-gray">月预算</tm-text>
+							<tm-icon name="tmicon-edit" _class="text-gray tw-ml-1" :font-size="30"></tm-icon>
+						</view>
+						<tm-text :fontSize="28" _class="tw-font-bold tw-mt-[10rpx]"> ￥6728.90 </tm-text>
 					</view>
 				</view>
 			</view>
@@ -66,7 +64,7 @@
 	<tm-sheet :margin="[32, 24]" :round="5">
 		<view>
 			<view class=" tw-flex tw-justify-center">
-				<tm-segtab :round="24" :gutter="4" :height="50" :width="400" color="primary" activeColor="white" :font-size="24" :list="list" defaultValue="2"></tm-segtab>
+				<tm-segtab :round="24" :gutter="4" :height="50" :width="200" color="primary" activeColor="white" :font-size="24" :list="list" defaultValue="2"></tm-segtab>
 			</view>
 			<view class=" tw-flex tw-justify-center">
 				<tm-chart ref="chartDom" :width="660"  :height="400" @onInit="chartInit"></tm-chart>
@@ -91,7 +89,10 @@
 						class="tw-bg-red tw-w-[12rpx] tw-h-[12rpx] tw-rounded tw-mr-2"
 						v-if="secondItem.amountType === 1"
 					></view>
-					<tm-text class="">{{ secondItem.type }}</tm-text>
+					<view>
+						<tm-text class="">{{ secondItem.type }}</tm-text>
+						<tm-text :font-size="20" _class="text-gray">测试测试</tm-text>
+					</view>
 				</view>
 				<view class="tw-text-green tw-text-sm" v-if="secondItem.amountType === 0"
 					>-{{ secondItem.amount.toFixed(2) }}</view
@@ -127,7 +128,6 @@ defineProps({
 const list = ref([
 	{ text: '收入', id: '1' },
 	{ text: '支出', id: '2' },
-	{ text: '不计收支', id: '3' }
 ])
 
 const isDark = computed(() => {
@@ -146,6 +146,11 @@ const handleSumData = (list: any) => {
 	} else {
 		return '平 ' + sum.toFixed(2)
 	}
+}
+const toCalendarPage = () => {
+	uni.navigateTo({
+		url: '/pages/calendar/index'
+	})
 }
 
 const { chartInit }  = useBar();
