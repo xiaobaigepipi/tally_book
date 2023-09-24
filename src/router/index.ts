@@ -8,15 +8,9 @@ export default function initRouter() {
 	];
 
 	console.log('初始化路由拦截')
-	const token = uni.getStorageSync('token');
-	if (!token) {
-		// #ifdef H5
-			//uni.navigateTo({ url: '/pages/login/index' })
-		// #endif
-
-		// #ifdef MP-WEIXIN
-		console.log('微信小程序')
-		// #endif
+	const initToken = uni.getStorageSync('token');
+	if (!initToken) {
+		uni.navigateTo({ url: '/pages/login/index'})
 	}
 
 	routeTypes.forEach(item => {
@@ -28,22 +22,18 @@ export default function initRouter() {
 				if (whiteList.includes(url)) {
 					return e;
 				} else {
+					const token = uni.getStorageSync('token');
 					if (token) {
 						return e
 					} else {
-						// #ifdef H5
+
 						uni.showToast({
 							title: '请先登录',
-							icon: 'none'
+							icon: 'error'
 						})
-						//uni.navigateTo({ url: '/pages/login/index' })
-						// #endif
-
-						// #ifdef MP-WEIXIN
-						console.log('微信小程序')
-						// #endif
+						uni.navigateTo({ url: '/pages/login/index' })
 						
-						return true
+						return false
 					}
 				}
 			},

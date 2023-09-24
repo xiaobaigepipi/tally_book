@@ -44,6 +44,24 @@
 				"titlePenetrate": "YES",
 				"transparentTitle": "always"
 			}
+		},
+		{
+			"path": "pages/ledger/index",
+			"style": {
+				"navigationBarTitleText": "切换账本",
+				"navigationStyle": "custom",
+				"titlePenetrate": "YES",
+				"transparentTitle": "always"
+			}
+		},
+		{
+			"path": "pages/addPage/payIncomType",
+			"style": {
+				"navigationBarTitleText": "收支分类管理",
+				"navigationStyle": "custom",
+				"titlePenetrate": "YES",
+				"transparentTitle": "always"
+			}
 		}
 	],
 	"subPackages": [],

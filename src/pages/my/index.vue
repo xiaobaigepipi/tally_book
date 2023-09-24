@@ -7,20 +7,19 @@
 			rightText=""
 			:margin="[0, 0]"
 			:titleFontSize="28"
-			title="昵称"
+			:title="userInfo?.realName"
 			:rightTextSize="28"
 			:border="1"
 		>
 		</tm-cell>
-		<tm-cell :rightTextSize="28" :border="1" :margin="[0, 0]" :titleFontSize="28" title="电话" rightText="18577575564">
+		<tm-cell :rightTextSize="28" :border="1" :margin="[0, 0]" :titleFontSize="28" title="电话" :rightText="userInfo?.phone">
 		</tm-cell>
-		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="注册日期"  rightText="2023-08-09"> </tm-cell>
+		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="注册日期"  :rightText="userInfo?.createTime"> </tm-cell>
 	</tm-sheet>
 
 	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="5">
-		<tm-cell :rightTextSize="28" :border="1" :margin="[0, 0]" :titleFontSize="28" title="分类管理"></tm-cell>
-		<tm-cell :rightTextSize="28" :margin="[0, 0]" :border="1" :titleFontSize="28" title="账本管理"> </tm-cell>
-		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="资产管理"> </tm-cell>
+		<tm-cell :rightTextSize="28" :border="1" :margin="[0, 0]" :titleFontSize="28" title="收支分类管理" @click="toLedgerPage('/pages/addPage/payIncomType')"></tm-cell>
+		<tm-cell :rightTextSize="28" :margin="[0, 0]" :titleFontSize="28" title="账本管理" @click="toLedgerPage('/pages/ledger/index')"> </tm-cell>
 	</tm-sheet>
 
 	<tm-sheet :margin="[32, 32]" :padding="[10, 10]" :round="5">
@@ -42,30 +41,36 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import tmButton from '@/tmui/components/tm-button/tm-button.vue'
-// import { useTmpiniaStore } from '@/tmui/tool/lib/tmpinia'
 import tmNavbar from '@/tmui/components/tm-navbar/tm-navbar.vue'
-import { testRequest } from '@/api/record/index'
+import { getUserInfo} from '@/api/user/index'
 import tmCell from '@/tmui/components/tm-cell/tm-cell.vue'
 import tmSheet from '@/tmui/components/tm-sheet/tm-sheet.vue'
 import tmSwitch from '@/tmui/components/tm-switch/tm-switch.vue'
 import tmDrawer from '@/tmui/components/tm-drawer/tm-drawer.vue'
 import Theme from './theme.vue'
 import useSelectTheme from './theme'
+import { userType } from '@/types/user'
 
 const calendarView = ref<InstanceType<typeof tmDrawer> | null>(null)
-// const store = useTmpiniaStore();
 const showWin = ref<boolean>(false);
+const userInfo = ref<userType>()
 
 const { selectColor, changeTheme, isDark, onChangeDark } = useSelectTheme();
-console.log(isDark.value)
+// console.log(isDark.value)
 
 onMounted(() => {
-	testRequest().then(res => {
-		console.log(res)
+	getUserInfo().then(res => {
+		userInfo.value = res.data;
 	}).catch(err => {
 		console.log(err)
 	})
 })
+
+const toLedgerPage = (url: string) => {
+	uni.navigateTo({
+		url: url
+	})
+}
 
 
 

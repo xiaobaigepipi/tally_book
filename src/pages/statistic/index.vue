@@ -4,7 +4,7 @@
 			<tm-sheet  :margin="[0, 0]" :padding="[0,0]" :color="isDark?'#000000':color" :linear="isDark?'':'top'">
 				<view :style="{'height':safeTop  + 'px'}"></view>
 				<view class=" tw-px-[32rpx] tw-py-[20rpx]">
-					<tm-text :font-size="36">我的账本</tm-text>
+					<tm-text :font-size="36">{{ defaultLedger?.name }}</tm-text>
 					<view class=" tw-flex tw-justify-between tw-items-center tw-pt-[30rpx]  tw-pb-[10rpx]">
 						<tm-segtab :list="list" :height="54" :round="24" :font-size="28" :gutter="4" :color="color" bgColor="white" activeColor="white" :width="200" default-value="1"></tm-segtab>
 						<view class="tw-flex tw-justify-center tw-items-center">
@@ -73,8 +73,10 @@ import TmApp from "@/tmui/components/tm-app/tm-app.vue";
 import tmChart from "@/tmui/components/tm-chart/tm-chart.vue";
 import usePie from './usePie'
 import tmProgress from "@/tmui/components/tm-progress/tm-progress.vue";
-// import tmButton from "@/tmui/components/tm-button/tm-button.vue";
 import { useTmpiniaStore } from '@/tmui/tool/lib/tmpinia'
+import { useDefaultLedger } from "../hooks/useDefaultLedger";
+
+const { defaultLedger } = useDefaultLedger()
 
 const isDark = computed(() => {
 	return useTmpiniaStore().$state.tmStore.dark === true
@@ -99,7 +101,6 @@ defineProps({
 const chartDom = ref<InstanceType<typeof tmChart>>();
 const { chartInit, pieData } = usePie()
 
-// console.log(dataList.value)
 </script>
 
 <style lang="scss" scoped></style>

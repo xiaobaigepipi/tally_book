@@ -5,14 +5,16 @@ import tmui from "./tmui"
 import App from "./App.vue";
 import './style/index.scss'
 // #ifdef H5
-import './mock/index'
+// import './mock/index'
 // #endif
 
 const config = {
   // 在进阶指南中会讲到类型文件的使用。请注意右侧文档栏目。
   // 指定了类型后，在里面输入会有类型提示和校验。
 	theme: {
-		primary: '#4c93e4'
+		primary: '#4bba9c',
+		green: '#389e0d',
+		red: '#f5222d'
 	},
 	themeConfig: {
 		dark: {

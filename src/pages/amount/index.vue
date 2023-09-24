@@ -3,7 +3,7 @@
 		<tm-sheet :height="180 + (safeTop*2)" :transprent="isDark === true" :margin="[0, 0]" :padding="[0,0]" :color="isDark?'':color" :linear="isDark?'':'bottom'">
 			<view :style="{'height':safeTop  + 'px'}"></view>
 			<view class=" tw-px-[32rpx] tw-py-[20rpx]">
-				<tm-text :font-size="36">我的账本</tm-text>
+				<tm-text :font-size="36">{{ defaultLedger?.name }}</tm-text>
 			</view>
 		</tm-sheet>
 	</view>
@@ -68,7 +68,9 @@ import tmText from "@/tmui/components/tm-text/tm-text.vue";
 import tmDivider from "@/tmui/components/tm-divider/tm-divider.vue";
 import { ref } from "vue";
 import TextIcon from '@/components/text-icon/index.vue'
+import { useDefaultLedger } from "../hooks/useDefaultLedger";
 
+const { defaultLedger }  = useDefaultLedger();
 const isDark = computed(() => {
 	return getIsDark()
 })

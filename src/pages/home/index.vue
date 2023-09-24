@@ -13,8 +13,8 @@
 				:class="{'image-dark': isDark}"
 			/>
 			<view :style="{'height': safeTop + 'px'}"></view>
-			<view class="tw-flex tw-justify-start tw-items-center tw-relative tw-z-10 tw-pt-[30rpx] tw-pb-[30rpx]">
-				<tm-text color="white" :fontSize="36">默认账本</tm-text>
+			<view class="tw-flex tw-justify-start tw-items-center tw-relative tw-z-10 tw-pt-[30rpx] tw-pb-[30rpx]" @click="toLedger">
+				<tm-text color="white" :fontSize="36">{{ defaultLedger?.name }}</tm-text>
 				<tm-icon :followTheme="false" color="white" class="tw-ml-1 tw-mt-[5rpx]" name="tmicon-waiting-fill" :fontSize="34"></tm-icon>
 			</view>
 			<view class="tw-z-10 tw-relative tw-flex tw-justify-between">
@@ -64,7 +64,7 @@
 	<tm-sheet :margin="[32, 24]" :round="5">
 		<view>
 			<view class=" tw-flex tw-justify-center">
-				<tm-segtab :round="24" :gutter="4" :height="50" :width="200" color="primary" activeColor="white" :font-size="24" :list="list" defaultValue="2"></tm-segtab>
+				<tm-segtab :round="24" :gutter="4" :height="50" :width="200" :color="color" activeColor="white" :font-size="24" :list="list" defaultValue="2"></tm-segtab>
 			</view>
 			<view class=" tw-flex tw-justify-center">
 				<tm-chart ref="chartDom" :width="660"  :height="400" @onInit="chartInit"></tm-chart>
@@ -116,7 +116,14 @@ import { useTmpiniaStore } from '@/tmui/tool/lib/tmpinia'
 import tmSegtab from '@/tmui/components/tm-segtab/tm-segtab.vue'
 import tmChart from '@/tmui/components/tm-chart/tm-chart.vue'
 import useBar from './useBar'
+import { getThemeColor } from "@/utils/theme";
+import { useDefaultLedger } from '@/pages/hooks/useDefaultLedger'
 
+const { defaultLedger } = useDefaultLedger()
+
+const color = computed(() => {
+	return getThemeColor()
+})
 const currentDate = ref<string>('2023-09')
 defineProps({
 	safeTop: {
@@ -150,6 +157,12 @@ const handleSumData = (list: any) => {
 const toCalendarPage = () => {
 	uni.navigateTo({
 		url: '/pages/calendar/index'
+	})
+}
+
+const toLedger = () => {
+	uni.navigateTo({
+		url: '/pages/ledger/index'
 	})
 }
 

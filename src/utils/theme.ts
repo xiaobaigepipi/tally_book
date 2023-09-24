@@ -6,7 +6,7 @@ export const getThemeColor = (): string => {
 	const color: string = useTmpiniaStore().$state.tmStore.color;
 
 	if (!color) {
-		return getPrimaryColor()
+		return getColorByName('primary')
 	}
 
 	const list = uni.getStorageSync('colorArrayList')
@@ -19,11 +19,11 @@ export const getThemeColor = (): string => {
 	return result;
 }
 
-const getPrimaryColor = (): string => {
+export const getColorByName = (type: string): string => {
 	let result: string =  '';
 	const list = uni.getStorageSync('colorArrayList')
 	list.forEach((item: any) => {
-		if (item.name == 'primary') {
+		if (item.name == type) {
 			result = item.value
 		}
 	});
@@ -34,3 +34,4 @@ const getPrimaryColor = (): string => {
 export const getIsDark = () => {
 	return useTmpiniaStore().$state.tmStore.dark === true
 }
+

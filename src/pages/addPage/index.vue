@@ -120,7 +120,7 @@ const safeTop = ref<number>(0)
 
 const amount = ref<string>('')
 const selectType = ref<number>(1)
-const color = ref<string>('#4ec752')
+const color = ref<string>('#389e0d')
 const selectIndex = ref<number>(-1)
 const amountC = computed(() => {
 	console.log(amount.value)
@@ -150,10 +150,10 @@ const confirmNumber = () => {}
 const handleSelectType = (val: number) => {
 	selectType.value = val
 	if (val === 1) {
-		color.value = '#4ec752'
+		color.value = '#389e0d'
 	}
 	if (val === 2) {
-		color.value = '#FF5722'
+		color.value = '#f5222d'
 	}
 	if (val === 3) {
 		color.value = '#4c93e4'

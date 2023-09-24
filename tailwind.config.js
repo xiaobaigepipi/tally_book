@@ -12,8 +12,8 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				'green': '#4ec752',
-				'red': '#FF5722',
+				'green': '#389e0d',
+				'red': '#f5222d',
 				'red-deep': '#F56C6C',
 				'bg-gray':  '#eeeeee'
 			}

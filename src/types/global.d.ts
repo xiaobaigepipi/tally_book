@@ -7,3 +7,9 @@ interface requestOptionsType<T = any> {
 	baseUrl?: string,
 }
 
+interface responseType<T = any>{
+	data?: T,
+	code: number,
+	message?: string
+}
+

@@ -30,6 +30,9 @@ import { ref } from "vue";
 const color = ref('');
 const colorList = ref([
 	{
+		value: '#4bba9c'
+	},
+	{
 		value: '#4c93e4'
 	},
 	{

@@ -71,7 +71,7 @@ const defaultConfig = {
 				fontSize: 5,
 			},
 			itemStyle: {
-				color: '#4ec752',
+				color: '#389e0d',
 				borderRadius: [3, 3, 0, 0]
       },
 			barWidth: 7,
