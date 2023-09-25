@@ -318,6 +318,8 @@ function getChart() {
 	})
 }
 
+
+
 function getImg(){
 	return new Promise((res,rej)=>{
 		if(!ctx){

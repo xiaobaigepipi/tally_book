@@ -23,7 +23,7 @@
 			:padding="props.padding"
 			:_class="props._class"
 			:_style="props._style"
-			hover-class="opacity-6"
+			:hover-class="clickBg? 'opacity-6': ''"
 		>
 			<view :userInteractionEnabled="true" class="flex flex-row flex-row-center-center" :class="[_computedValue.url ? 'url' : '']">
 				<view
@@ -242,6 +242,10 @@ const props = defineProps({
 	darkBgColor: {
 		type: String,
 		default: ''
+	},
+	clickBg: {
+		type: Boolean,
+		default: true
 	}
 })
 

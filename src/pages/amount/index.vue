@@ -1,5 +1,5 @@
 <template>
-	<view class="tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-z-10" :style="{'height': safeTop*2 + 180 + 'rpx'}">
+	<view class="" :style="{'height': safeTop*2 + 180 + 'rpx'}">
 		<tm-sheet :height="180 + (safeTop*2)" :transprent="isDark === true" :margin="[0, 0]" :padding="[0,0]" :color="isDark?'':color" :linear="isDark?'':'bottom'">
 			<view :style="{'height':safeTop  + 'px'}"></view>
 			<view class=" tw-px-[32rpx] tw-py-[20rpx]">
@@ -7,68 +7,72 @@
 			</view>
 		</tm-sheet>
 	</view>
-	<view :style="{'height': safeTop + 30 + 'px'}"></view>
-	<view class=" tw-relative tw-z-50">
+	<!-- <view :style="{'height': safeTop + 30 + 'px'}"></view> -->
+	<view class=" tw-relative tw-z-50" :style="{'margin-top': -(safeTop + 60) + 'px'}">
 		<tm-sheet :height="100" :round="5" :margin="[32, 32]" :padding="[20,20]">
-			<view>
-				<tm-text  :font-size="30" _class=" tw-font-bold">总资产</tm-text>
-			</view>
-			<view class=" tw-mt-1">
-				<tm-text  :font-size="40" _class=" tw-font-bold  text-red">￥12373.00</tm-text>
+			<view class=" tw-flex tw-justify-between tw-items-center">
+				<view>
+					<tm-text  :font-size="30" _class=" tw-font-bold">总资产</tm-text>
+					<view class=" tw-mt-1">
+						<tm-text  :font-size="40" _class=" tw-font-bold">￥{{ sum }}</tm-text>
+					</view>
+				</view>
+					<tm-button
+						color="green"
+						icon="tmicon-plus"
+						:width="60"
+						:round="10"
+						:height="60"
+						:fontSize="30"
+						:margin="[10]"
+						:shadow="0"
+						@click="toAddPage"
+						text
+						size="normal"
+					></tm-button>
 			</view>
 		</tm-sheet>
 	</view>
 
-	<tm-sheet :round="5">
+	<tm-sheet :round="5" v-for="(item) in accountList" :key="item.name">
 		<view class="tw-flex tw-justify-between tw-items-center tw-text-sm">
-			<tm-text class="tw-font-bold">资金账户</tm-text>
-			<tm-text class="tw-font-bold">共 36182.88</tm-text>
+			<tm-text class="tw-font-bold">{{ item.name }}</tm-text>
+			<tm-text class="tw-font-bold">共 {{ item.amount }}</tm-text>
 		</view>
 		<tm-divider align="center"></tm-divider>
 
-		<view v-for="(secondItem, secondIndex) in acounts" :key="secondIndex">
-			<view class="tw-flex tw-justify-between tw-items-center">
+		<view v-for="(secondItem, secondIndex) in item.children" :key="secondIndex">
+			<view v-for="(sitem) in secondItem.children" :key="sitem.id" @click="toAddPage(sitem)">
+				<view class="tw-flex tw-justify-between tw-items-center tw-mb-2">
 				<view class="flex tw-justify-start tw-items-center">
-					<text-icon :text="secondItem.name" :color="secondItem.color"></text-icon>
-					<tm-text class="tw-ml-1">{{ secondItem.name }}</tm-text>
+					<view>
+						<text-icon :text="secondItem.name" :color="secondItem.color"></text-icon>
+					</view>
+					<view class="tw-ml-1">
+						<tm-text>{{ sitem.name }}</tm-text>
+						<tm-text :font-size="18" _class="text-gray tw-mt-[4rpx]" v-if="sitem.remark">{{ sitem.remark }}</tm-text>
+					</view>
 				</view>
-				<view class="tw-text-red tw-text-sm">{{ secondItem.value }}</view
-				>
-			</view>
-			<view class="tw-h-2" v-if="secondIndex < acounts.length - 1"></view>
-		</view>
-	</tm-sheet>
-
-	<tm-sheet :round="5">
-		<view class="tw-flex tw-justify-between tw-items-center tw-text-sm">
-			<tm-text class="tw-font-bold">投资理财</tm-text>
-			<tm-text class="tw-font-bold">共 36182.88</tm-text>
-		</view>
-		<tm-divider align="center"></tm-divider>
-
-		<view v-for="(secondItem, secondIndex) in acounts1" :key="secondIndex">
-			<view class="tw-flex tw-justify-between tw-items-center">
-				<view class="flex tw-justify-start tw-items-center">
-					<text-icon :text="secondItem.name" :color="secondItem.color"></text-icon>
-					<tm-text class="tw-ml-1" >{{ secondItem.name }}</tm-text>
+				<view class="tw-text-sm" v-if="(sitem.balance as number) > 0">{{ sitem.balance }}</view>
+				<view class="tw-text-green tw-text-sm" v-else>{{ sitem.balance }}</view>
 				</view>
-				<view class="tw-text-red tw-text-sm">{{ secondItem.value }}</view
-				>
 			</view>
-			<view class="tw-h-2" v-if="secondIndex < acounts.length - 1"></view>
 		</view>
 	</tm-sheet>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed,  ref, onMounted } from "vue"
 import { getThemeColor, getIsDark } from "@/utils/theme";
 import tmSheet from "@/tmui/components/tm-sheet/tm-sheet.vue";
 import tmText from "@/tmui/components/tm-text/tm-text.vue";
 import tmDivider from "@/tmui/components/tm-divider/tm-divider.vue";
-import { ref } from "vue";
 import TextIcon from '@/components/text-icon/index.vue'
 import { useDefaultLedger } from "../hooks/useDefaultLedger";
+import tmButton from "@/tmui/components/tm-button/tm-button.vue";
+import {getUserAccountList} from '@/api/user/index'
+import { accountCategoryType } from "@/types/user";
+
 
 const { defaultLedger }  = useDefaultLedger();
 const isDark = computed(() => {
@@ -78,6 +82,8 @@ const isDark = computed(() => {
 const color = computed(() => {
 	return getThemeColor()
 })
+const accountList = ref<Array<accountCategoryType>>();
+const sum = ref<number>(0);
 
 defineProps({
 	safeTop: {
@@ -86,30 +92,24 @@ defineProps({
 	}
 })
 
-const acounts = ref<Array<any>>([
-	{
-		name: '支付宝',
-		value: '5263.00'
-	},
-	{
-		name: '交通银行',
-		value: '1263.00',
-		color: 'blue'
-	}
-]);
+const toAddPage = (item: any) => {
+	console.log(item)
+	const url = ('/pages/amount/addAmount') + (item.id?("?accountId="+item.id) : '');
+	console.log(url)
+	uni.navigateTo({
+		url: url
+	})
+}
+onMounted(() => {
+	init()
+})
 
-const acounts1 = ref<Array<any>>([
-	{
-		name: '股票',
-		value: '5263.00',
-		color: 'red'
-	},
-	{
-		name: '基金',
-		value: '1263.00',
-		color: 'green'
-	}
-]);
+const init = () => {
+	getUserAccountList(defaultLedger.value.id as number).then(res => {
+		accountList.value = res.data?.children
+		sum.value = res.data?.amount as number
+	})
+}
 </script>
 
 <style lang="scss" scoped></style>

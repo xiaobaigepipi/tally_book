@@ -62,6 +62,15 @@
 				"titlePenetrate": "YES",
 				"transparentTitle": "always"
 			}
+		},
+		{
+			"path": "pages/amount/addAmount",
+			"style": {
+				"navigationBarTitleText": "管理资产信息",
+				"navigationStyle": "custom",
+				"titlePenetrate": "YES",
+				"transparentTitle": "always"
+			}
 		}
 	],
 	"subPackages": [],

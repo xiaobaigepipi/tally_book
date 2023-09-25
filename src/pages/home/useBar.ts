@@ -1,26 +1,7 @@
 
-import { ECharts } from "echarts"
-import { ref } from "vue";
-
 const useBar = () => {
-	const barConfig = ref(defaultConfig);
-	const barData: any = ref([]);
-
-	async function chartInit(chart: ECharts) {
-		const func = new Promise((resolve) => {
-			setTimeout(() => {
-				// console.log(12)
-				resolve([])
-			}, 200)
-		})
-		
-		barData.value = await func
-		chart.setOption(barConfig.value)
-	}
-
-
 	return {
-		chartInit
+		defaultConfig
 	}
 }
 
@@ -31,7 +12,7 @@ const defaultConfig = {
     type: 'category',
     data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14',
 		'15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28',
-		'29', '30'
+		'29', '30', '31'
 		],
 		axisLabel: {
 			color: '#999',

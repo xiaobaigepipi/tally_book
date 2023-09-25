@@ -42,6 +42,7 @@
 		<tm-drawer v-model:show="showWin" okText="确认" hide-header :height="900">
 			<tm-form @submit="confirmSubmit" ref="form" v-model="pay" :label-width="190" :margin="[20, 20]" :padding="[0, 0]">
 				<tm-form-item
+					:errHeight="15"
 					required
 					field="name"
 					label="收支名称"
@@ -49,7 +50,7 @@
 				>
 					<tm-input :inputPadding="[0, 0]" v-model.lazy="pay.name" focusColor="grey" :follow-theme="false" :transprent="true" :showBottomBotder="false"> </tm-input>
 				</tm-form-item>
-				<tm-form-item label="收支类型" field="payType" :rules="[{ required: false, message: '请选择收支类型' }]">
+				<tm-form-item :errHeight="15" label="收支类型" field="payType" :rules="[{ required: false, message: '请选择收支类型' }]">
 					<view @click="showPicker = !showPicker" class="flex flex-row flex-row-center-between">
 						<tm-text :userInteractionEnabled="false" :label="payTypeName"></tm-text>
 						<tm-icon :userInteractionEnabled="false" :font-size="24" name="tmicon-angle-right"></tm-icon>

@@ -1,7 +1,7 @@
 
 const config = {
 	baseUrl: '/api',
-	timeout: 1000,
+	timeout: 10000,
 	header: {
 		Accept: 'application/json',
 		'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const afterRequest = <T>(res: any): Promise<responseType<T>> => {
 				resolve(res.data as responseType<T>)
 			} else {
 				uni.showToast({
-					title: res.data.message,
+					title: res.data.message || "服务器错误",
 					icon: 'none',
 					duration: 3000
 				})
@@ -92,7 +92,7 @@ export const request = <T>(options: requestOptionsType): Promise<responseType<T>
 		return afterRequest<T>(res)
 	}).catch(error => {
 		uni.showToast({
-			title: error || '服务器报错',
+			title: '服务器报错',
 			icon: 'none',
 			duration: 5000
 		})

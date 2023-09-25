@@ -1,5 +1,5 @@
 import { request } from '../request'
-import { userType, ledgerType, payTypeType } from '@/types/user'
+import { userType, ledgerType, payTypeType, accountCategoryType, accountUserType, userSumDataType } from '@/types/user'
 
 /**
  * 登录
@@ -85,4 +85,65 @@ export const postLedgerUpdate = (data: ledgerType) => {
 	})
 }
 
+/**
+ *获取资产类型表
+ */
+ export const getPayTypeCategory = () => {
+	return request<Array<accountCategoryType>>({
+		url: '/book/cusAccount/typeList',
+		method: 'GET'
+	})
+}
+
+
+/**
+ *添加资产类
+ */
+ export const postAddAccount = (data: accountUserType) => {
+	return request({
+		url: '/book/cusAccount/add',
+		method: 'POST',
+		data
+	})
+}
+
+
+/**
+ *获取用户资产
+ */
+ export const getUserAccountList = (ledgerId: number) => {
+	return request<userSumDataType>({
+		url: '/book/cusAccount/listByUser',
+		method: 'GET',
+		data: {
+			ledgerId: ledgerId
+		}
+	})
+}
+
+/**
+ *获取资产
+ */
+ export const getAccountOne = (ledgerId: number) => {
+	return request<accountUserType>({
+		url: '/book/cusAccount/accountOne',
+		method: 'GET',
+		data: {
+			accountId: ledgerId
+		}
+	})
+}
+
+/**
+ *获取资产列表
+ */
+ export const getAccountSelectList = (ledgerId: number) => {
+	return request<Array<accountUserType>>({
+		url: '/book/cusAccount/accountSelect',
+		method: 'GET',
+		data: {
+			ledgerId: ledgerId
+		}
+	})
+}
 
