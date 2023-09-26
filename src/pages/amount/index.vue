@@ -1,5 +1,5 @@
 <template>
-	<view class="" :style="{'height': safeTop*2 + 180 + 'rpx'}">
+	<view class="" :style="{'height': safeTop + 90 + 'px'}">
 		<tm-sheet :height="180 + (safeTop*2)" :transprent="isDark === true" :margin="[0, 0]" :padding="[0,0]" :color="isDark?'':color" :linear="isDark?'':'bottom'">
 			<view :style="{'height':safeTop  + 'px'}"></view>
 			<view class=" tw-px-[32rpx] tw-py-[20rpx]">
@@ -8,13 +8,13 @@
 		</tm-sheet>
 	</view>
 	<!-- <view :style="{'height': safeTop + 30 + 'px'}"></view> -->
-	<view class=" tw-relative tw-z-50" :style="{'margin-top': -(safeTop + 60) + 'px'}">
+	<view class=" tw-relative tw-z-50" :style="{'margin-top': -60 + 'px'}">
 		<tm-sheet :height="100" :round="5" :margin="[32, 32]" :padding="[20,20]">
 			<view class=" tw-flex tw-justify-between tw-items-center">
 				<view>
 					<tm-text  :font-size="30" _class=" tw-font-bold">总资产</tm-text>
 					<view class=" tw-mt-1">
-						<tm-text  :font-size="40" _class=" tw-font-bold">￥{{ sum }}</tm-text>
+						<tm-text  :font-size="40" _class=" tw-font-bold" :label="'￥'+sumall"></tm-text>
 					</view>
 				</view>
 					<tm-button
@@ -84,6 +84,9 @@ const color = computed(() => {
 })
 const accountList = ref<Array<accountCategoryType>>();
 const sum = ref<number>(0);
+const sumall = computed(() => {
+	return sum.value
+})
 
 defineProps({
 	safeTop: {
@@ -108,6 +111,7 @@ const init = () => {
 	getUserAccountList(defaultLedger.value.id as number).then(res => {
 		accountList.value = res.data?.children
 		sum.value = res.data?.amount as number
+		console.log(sum.value)
 	})
 }
 </script>

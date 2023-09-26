@@ -46,7 +46,7 @@ const defaultConfig: any = {
 			center: ['50%', '50%'],
 			label: {
 				alignTo: 'labelLine',
-				formatter: function (d) {
+				formatter: function (d: any) {
 					return d.name + '\n' + Math.round(d.percent) + '%'
 				},
 				minMargin: 5,

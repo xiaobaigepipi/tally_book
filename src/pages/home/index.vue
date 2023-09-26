@@ -37,7 +37,7 @@
 				<view class="tw-flex tw-justify-around tw-items-center">
 					<view class="tw-flex tw-flex-col tw-items-center">
 						<tm-text :fontSize="24" _class="text-gray">结余</tm-text>
-						<tm-text :fontSize="32" _class="tw-mt-[10rpx] tw-font-bold"> ￥{{ allPayIncome?.surplus }} </tm-text>
+						<tm-text :fontSize="32" _class="tw-mt-[10rpx] tw-font-bold" :label="(allPayIncome?.surplus || 0)"></tm-text>
 					</view>
 					<!-- <view class="tw-flex tw-flex-col tw-items-center">
 						<view class="tw-flex tw-flex-row tw-items-center">
@@ -50,11 +50,11 @@
 				<view class=" tw-flex tw-justify-around tw-mt-[30rpx]">
 					<view class=" tw-flex tw-flex-col tw-items-center">
 							<tm-text :fontSize="24" _class="text-gray">月收入</tm-text>
-							<tm-text :fontSize="32"  class="tw-font-bold tw-mt-[10rpx]"> ￥{{ allPayIncome?.incomeSum }} </tm-text>
+							<tm-text :fontSize="32"  class="tw-font-bold tw-mt-[10rpx]" :label="allPayIncome?.incomeSum || 0"></tm-text>
 					</view>
 					<view class=" tw-flex tw-flex-col tw-items-center">
 						<tm-text :fontSize="24" _class="text-gray">月支出</tm-text>
-						<tm-text :fontSize="32"  class="tw-mt-[10rpx] tw-font-bold"> ￥{{ Math.abs(allPayIncome?.paySum as number) || 0}}</tm-text>
+						<tm-text :fontSize="32"  class="tw-mt-[10rpx] tw-font-bold" :label="Math.abs(allPayIncome?.paySum as number) || 0"></tm-text>
 					</view>
 				</view>
 			</view>
@@ -91,9 +91,9 @@
 					<view>
 						<view class="flex tw-justify-start tw-items-center">
 							<tm-text class="">{{ secondItem.payTypeName }}</tm-text>
-							<tm-text :font-size="20" _class="text-gray " v-if="secondItem.accountName"> --{{ secondItem.accountName }}</tm-text>
+							<tm-text :font-size="24" _class="text-gray " v-if="secondItem.accountName"> --{{ secondItem.accountName }}</tm-text>
 						</view>
-						<tm-text :font-size="20" _class="text-gray">{{ secondItem.remark }}</tm-text>
+						<tm-text :font-size="24" _class="text-gray">{{ secondItem.remark }}</tm-text>
 					</view>
 				</view>
 				<view class="tw-text-green tw-text-sm" v-if="secondItem.amount as number < 0"
@@ -125,7 +125,7 @@ import tmIcon from '@/tmui/components/tm-icon/tm-icon.vue'
 import tmText from '@/tmui/components/tm-text/tm-text.vue'
 import tmSheet from '@/tmui/components/tm-sheet/tm-sheet.vue'
 import tmDivider from '@/tmui/components/tm-divider/tm-divider.vue'
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useTmpiniaStore } from '@/tmui/tool/lib/tmpinia'
 import tmSegtab from '@/tmui/components/tm-segtab/tm-segtab.vue'
 import tmChart from '@/tmui/components/tm-chart/tm-chart.vue'
@@ -136,7 +136,6 @@ import { getThemeColor, getColorByName } from "@/utils/theme";
 import { useDefaultLedger } from '@/pages/hooks/useDefaultLedger'
 import * as dayjs from "@/tmui/tool/dayjs/esm/index"
 import isoWeek from "@/tmui/tool/dayjs/esm/plugin/isoWeek/index"
-import { onLoad } from '@dcloudio/uni-app'
 
 const chartDom = ref<InstanceType<typeof tmChart>>();
 
@@ -243,7 +242,7 @@ const changeChart = (val: any) => {
 	setChart(allPayIncome.value?.children, val, val === '2'? 'red': 'green')
 }
 
-onLoad(() => {
+onMounted(() => {
 	init()
 })
 

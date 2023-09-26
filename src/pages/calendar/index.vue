@@ -5,17 +5,15 @@
 			<view class=" tw-flex tw-justify-around">
 				<view class=" tw-flex tw-flex-col tw-items-center">
 						<tm-text :fontSize="24" _class="text-gray">月收入</tm-text>
-						<tm-text :fontSize="28"  class="tw-font-bold tw-mt-[10rpx]"> ￥{{ allPayIncome?.incomeSum }} </tm-text>
+						<tm-text :fontSize="28"  class="tw-font-bold tw-mt-[10rpx]" :label="allPayIncome?.incomeSum ||0"></tm-text>
 				</view>
 				<view class=" tw-flex tw-flex-col tw-items-center">
 					<tm-text :fontSize="24" _class="text-gray">月支出</tm-text>
-					<tm-text :fontSize="28"  class="tw-mt-[10rpx] tw-font-bold"> ￥{{ Math.abs(allPayIncome?.paySum || 0) }}
-					</tm-text>
+					<tm-text :fontSize="28"  class="tw-mt-[10rpx] tw-font-bold" :label="Math.abs(allPayIncome?.paySum || 0)"></tm-text>
 				</view>
 				<view class=" tw-flex tw-flex-col tw-items-center">
 					<tm-text :fontSize="24" _class="text-gray">月结余</tm-text>
-					<tm-text :fontSize="28"  class="tw-mt-[10rpx] tw-font-bold"> ￥{{ allPayIncome?.surplus }}
-					</tm-text>
+					<tm-text :fontSize="28"  class="tw-mt-[10rpx] tw-font-bold" :label="allPayIncome?.surplus || 0"></tm-text>
 				</view>
 			</view>
 		</tm-sheet>

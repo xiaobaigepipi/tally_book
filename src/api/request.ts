@@ -70,9 +70,11 @@ const afterRequest = <T>(res: any): Promise<responseType<T>> => {
 				})
 				// 登录状态失效
 				if (res.data.code === 1005) {
+					console.log(123)
 					uni.navigateTo({ url: '/pages/login/index' })
+				} else {
+					// reject(res.data.message)
 				}
-				reject(res.data.message)
 			}
 		} else {
 			uni.showToast({
@@ -91,13 +93,13 @@ export const request = <T>(options: requestOptionsType): Promise<responseType<T>
 	}).then((res) =>{
 		return afterRequest<T>(res)
 	}).catch(error => {
+		loadNumber--;
+		hideLoading();
 		uni.showToast({
 			title: '服务器报错',
 			icon: 'none',
 			duration: 5000
 		})
-		loadNumber--;
-		hideLoading();
 		return Promise.reject(error)
 	})
 }

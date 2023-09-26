@@ -20,21 +20,21 @@
 			<view class=" tw-flex tw-justify-around tw-items-end">
 				<view class="tw-flex tw-flex-col tw-items-center">
 					<tm-text _class="text-gray" :font-size="24">收入</tm-text>
-					<tm-text :font-size="30" _class="tw-font-bold tw-mt-1  text-red">￥{{ allPayIncome?.incomeSum }}</tm-text>
+					<tm-text :font-size="30" _class="tw-font-bold tw-mt-1  text-red" :label="allPayIncome?.incomeSum || 0"></tm-text>
 				</view>
 				<view class="tw-flex tw-flex-col tw-items-center">
 					<tm-text _class="text-gray" :font-size="24">支出</tm-text>
-					<tm-text :font-size="30" _class="tw-font-bold text-green tw-mt-1 ">￥{{ Math.abs(allPayIncome?.paySum || 0)}}</tm-text>
+					<tm-text :font-size="30" _class="tw-font-bold text-green tw-mt-1 " :label="Math.abs(allPayIncome?.paySum || 0)"></tm-text>
 				</view>
 			</view>
 			<view class=" tw-flex tw-justify-around tw-items-center tw-mt-[30rpx]">
 				<view class=" tw-flex tw-flex-col tw-items-center">
 					<tm-text _class="text-gray" :font-size="24">结余</tm-text>
-					<tm-text :font-size="30" _class="tw-mt-1 tw-font-bold">￥{{ allPayIncome?.surplus }}</tm-text>
+					<tm-text :font-size="30" _class="tw-mt-1 tw-font-bold" :label="allPayIncome?.surplus || 0"></tm-text>
 				</view>
 				<view class=" tw-flex tw-flex-col tw-items-center">
 					<tm-text _class="text-gray" :font-size="24">日均支出</tm-text>
-					<tm-text :font-size="30" _class="tw-mt-1 tw-font-bold">￥{{  Math.abs(allPayIncome?.dailySum || 0) }}</tm-text>
+					<tm-text :font-size="30" _class="tw-mt-1 tw-font-bold" :label="Math.abs(allPayIncome?.dailySum || 0) "></tm-text>
 				</view>
 			</view>
 		</tm-sheet>
@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { computed, ref, onMounted } from "vue"
 import tmSheet from '@/tmui/components/tm-sheet/tm-sheet.vue'
 import tmTimePicker from "@/tmui/components/tm-time-picker/tm-time-picker.vue";
 import tmText from "@/tmui/components/tm-text/tm-text.vue";
@@ -96,7 +96,6 @@ import { useTmpiniaStore } from '@/tmui/tool/lib/tmpinia'
 import { useDefaultLedger } from "../hooks/useDefaultLedger";
 import * as dayjs from "@/tmui/tool/dayjs/esm/index"
 import isoWeek from "@/tmui/tool/dayjs/esm/plugin/isoWeek/index"
-import { onLoad } from '@dcloudio/uni-app'
 
 const chartDom = ref<InstanceType<typeof tmChart>>();
 
@@ -185,7 +184,7 @@ const changeChart = (val: any) => {
 	init()
 }
 
-onLoad(() => {
+onMounted(() => {
 	init()
 })
 
