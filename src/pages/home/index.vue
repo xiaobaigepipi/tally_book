@@ -89,7 +89,10 @@
 						v-if="secondItem.amount as number >=0"
 					></view>
 					<view>
-						<tm-text class="">{{ secondItem.payTypeName }}</tm-text>
+						<view class="flex tw-justify-start tw-items-center">
+							<tm-text class="">{{ secondItem.payTypeName }}</tm-text>
+							<tm-text :font-size="20" _class="text-gray " v-if="secondItem.accountName"> --{{ secondItem.accountName }}</tm-text>
+						</view>
 						<tm-text :font-size="20" _class="text-gray">{{ secondItem.remark }}</tm-text>
 					</view>
 				</view>
@@ -110,10 +113,10 @@
 		}"
 		v-model="dateModel"
 		v-model:show="showDate"
-		format="YYYY-MM-DD HH:mm:ss"
+		format="YYYY-MM"
 		@confirm="changeDateSelect"
 		>
-		</tm-time-picker>
+	</tm-time-picker>
 </template>
 
 <script setup lang="ts">

@@ -12,12 +12,27 @@ import { payIncomeType, payIncomAllType } from '@/types/user'
 	})
 }
 
+interface payType {
+	payDate?: string,
+	year?: boolean
+}
 /**
  *修改用户账本
  */
- export const getPayIncomeList = (data: payIncomeType) => {
+ export const getPayIncomeList = (data: payType) => {
 	return request<payIncomAllType>({
 		url: '/book/cusPayIncome/getPayIncome',
+		method: 'POST',
+		data
+	})
+}
+
+/**
+ *修改用户账本
+ */
+ export const getPayIncomeListByType = (data: payType) => {
+	return request<payIncomAllType>({
+		url: '/book/cusPayIncome/getPayIncomeByPayType',
 		method: 'POST',
 		data
 	})

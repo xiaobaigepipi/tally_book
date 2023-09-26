@@ -101,7 +101,9 @@ export interface payIncomeType {
   remark?: string;
   updateTime?: string;
   userId?: number;
-	payTypeName?: string,
+	payTypeName?: string
+	color?: string
+	accountName?: string
 	children?: Array<payIncomeType>
 }
 
@@ -109,6 +111,7 @@ export interface payIncomAllType {
 	incomeSum?: number
 	paySum?: number
 	surplus?:number
+	dailySum?: number
 	children: Array<payIncomeType>
 }
 

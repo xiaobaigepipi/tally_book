@@ -41,11 +41,11 @@
 						:height="90"
 						:width="90"
 						:shadow="0"
-						:round="24"
-						:border="item2.extra.color && isSelected(item2.dateStr) ? 1 : 0"
+						:round="3"
+						:border="0"
 						_class="flex-row"
 						:transprent="item2.extra.color || !isSelected(item2.dateStr)"
-						:color="item2.extra.color ? item2.extra.color : isSelected(item2.dateStr) ? _color : 'white'"
+						:color="isSelected(item2.dateStr)?_color  : item2.extra.color ? item2.extra.color : 'white'"
 						:margin="[0, 0]"
 						:padding="[0, 0]"
 					>
@@ -57,7 +57,7 @@
 						>
 							<view style="width: 62rpx" class="flex-center flex-col" :style="[{ opacity: item2.disabled ? '0.3' : '1' }]">
 								<tm-text :font-size="28" :label="item2.date"></tm-text>
-								<tm-text _class="flex-center" v-if="item2.extra.extra" :font-size="22" :label="item2.extra.extra"></tm-text>
+								<tm-text _class="flex-center"  v-if="item2.extra.extra" :font-size="20" :label="item2.extra.extra"></tm-text>
 							</view>
 						</view>
 					</tm-sheet>
@@ -216,10 +216,10 @@ watch(
 	{ deep: true }
 )
 
+
 //设置当前需要展示的月份。
 function setShowopenDate() {
 	//从当前选中的第一个日期开始。如果没有就显示当前本地时间的月。
-
 	if (_value.value.length == 0) {
 		return DayJs()
 	}
