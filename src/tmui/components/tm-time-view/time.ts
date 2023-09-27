@@ -139,7 +139,7 @@ export function getNowbyIndex(tmArray: timeArrayType, nowIndex: Array<number>, d
 		if (index !== -1) {
 			return tmArray[type][nowIndex[index]];
 		}
-		return tmArray[type][tmArray[type].length - 1];
+		return tmArray[type][1];
 	}
 
 	let year = getValue(timeDetailType.year);
@@ -159,6 +159,8 @@ export function getNowbyIndex(tmArray: timeArrayType, nowIndex: Array<number>, d
 		minute
 		+ ":" +
 		second
+
+	console.log(str)
 	return DayJs(str).format("YYYY/MM/DD HH:mm:ss")
 }
 /**
