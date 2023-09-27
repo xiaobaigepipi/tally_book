@@ -41,11 +41,11 @@
 		</view>
 		<view>
 			<tm-grid :col="5" :transprent="true" v-if="selectType === 1">
-				<tm-grid-item v-for="(item, index) in payList" :key="index" :height="150" @click="handleSelectIcon(item, index)">
+				<tm-grid-item v-for="(item, index) in payList" :key="index" :height="150" @click="handleSelectIcon(item)">
 					<view class="tw-flex-col tw-flex tw-items-center">
 						<tm-button
-							:color="selectIndex === index ? color: 'white'"
-							:fontColor="selectIndex === index ? color: '#999999'"
+							:color="selectIndex === item.id ? color: 'white'"
+							:fontColor="selectIndex === item.id ? color: '#999999'"
 							:follow-theme="false"
 							:width="90"
 							:round="20"
@@ -53,7 +53,7 @@
 							:fontSize="36"
 							:margin="[0, 8]"
 							:shadow="0"
-							:text="selectIndex === index"
+							:text="selectIndex === item.id"
 						>{{ item.name?.substring(0, 1)}}
 					</tm-button>
 						<tm-text :font-size="24">{{ item.name }}</tm-text>
@@ -61,11 +61,11 @@
 				</tm-grid-item>
 			</tm-grid>
 			<tm-grid :col="5" :transprent="true" v-else>
-				<tm-grid-item v-for="(item, index) in incomeList" :key="index" :height="150" @click="handleSelectIcon(item, index)">
+				<tm-grid-item v-for="(item, index) in incomeList" :key="index" :height="150" @click="handleSelectIcon(item)">
 					<view class="tw-flex-col tw-flex tw-items-center">
 						<tm-button
-							:color="selectIndex === index ? color: 'white'"
-							:fontColor="selectIndex === index ? color: '#999999'"
+							:color="selectIndex === item.id ? color: 'white'"
+							:fontColor="selectIndex === item.id ? color: '#999999'"
 							:follow-theme="false"
 							:width="90"
 							:round="20"
@@ -73,7 +73,7 @@
 							:fontSize="36"
 							:margin="[0, 8]"
 							:shadow="0"
-							:text="selectIndex === index"
+							:text="selectIndex === item.id"
 						>{{ item.name?.substring(0, 1)}}
 					</tm-button>
 						<tm-text :font-size="24">{{ item.name }}</tm-text>
@@ -89,7 +89,7 @@
 					<tm-text :font-size="36" :color="color" v-else>{{ '0.00' }}</tm-text>
 				</view>
 				<view class="tw-flex tw-justify-end">
-					<tm-button size="small" :width="180" :follow-theme="false" :color="color" :round="10" :margin="[10, 0]" @click="showWin = true">{{ accountName?accountName: '选择账本'}}</tm-button>
+					<tm-button size="small" :width="180" :follow-theme="false" :color="color" :round="10" :margin="[10, 0]" @click="showWin = true">{{ accountName?accountName: '选择账户'}}</tm-button>
 				</view>
 			</view>
 			<keyborad-number :color="color" v-model="amount" decimal @confirm="confirmNumber"></keyborad-number>
@@ -154,22 +154,22 @@ import tmGrid from '@/tmui/components/tm-grid/tm-grid.vue'
 import tmTimePicker from '@/tmui/components/tm-time-picker/tm-time-picker.vue'
 import { accountUserType, payTypeType, payIncomeType } from '@/types/user'
 import { getPayTypeList, getAccountSelectList } from '@/api/user'
-import { postPayIncomeUpdate } from '@/api/payIncome/index'
+import { postPayIncomeUpdate,  getPayIncomeInfo } from '@/api/payIncome/index'
 import { getColorByName } from '@/utils/theme'
 import * as dayjs from "@/tmui/tool/dayjs/esm/index"
 import isoWeek from "@/tmui/tool/dayjs/esm/plugin/isoWeek/index"
 const DayJs = dayjs.default;
 DayJs.extend(isoWeek);
 
-import { useDefaultLedger } from '@/pages/hooks/useDefaultLedger'
+import { useAppStore } from '@/store/app'
 
-const { defaultLedger } = useDefaultLedger()
+const { ledger} = useAppStore()
 
-onLoad(() => {
+onLoad((options) => {
 	safeBottom.value = uni.getSystemInfoSync()?.safeAreaInsets?.bottom || 0
 	safeTop.value = uni.getSystemInfoSync()?.safeAreaInsets?.top || 0
 	init();
-	getSelectAccount()
+	getSelectAccount(options?.id);
 })
 
 const showWin = ref<boolean>(false);
@@ -178,7 +178,7 @@ const safeTop = ref<number>(0)
 
 const payIncome = ref<payIncomeType>({
 	payIncome: '1',
-	ledgerId: defaultLedger.value.id
+	ledgerId: ledger.id
 });
 const accountName = ref<string>('');
 const amount = ref<string>('')
@@ -209,15 +209,41 @@ const init = () => {
 }
 
 const accountList = ref<Array<accountUserType>>();
-const getSelectAccount = () => {
-	getAccountSelectList(defaultLedger.value.id as number).then(res => {
+const getSelectAccount = (infoId: string | number) => {
+	getAccountSelectList(ledger.id as number).then(res => {
 		accountList.value = res.data;
+		if (infoId) {
+			getUpdateInfo(Number(infoId));
+		}
 	})
 }
 const selectAccount = (item: any) => {
 	payIncome.value.accountId = item.id
 	accountName.value = item.name
 	showWin.value = false
+}
+
+const getUpdateInfo = (id: number)  => {
+	getPayIncomeInfo({id: id}).then(res => {
+		amount.value = Math.abs(res.data?.amount || 0) + ''
+		selectType.value = Number(res.data?.payIncome) || 1
+		if (selectType.value === 1) {
+			color.value = getColorByName('green')
+		}
+		if (selectType.value === 2) {
+			color.value = getColorByName('red')
+		}
+		dateModel.value =DayJs(res.data?.payDate).format('YYYY/MM/DD HH:mm:ss')
+		selectIndex.value = res.data?.payTypeId as number
+		payIncome.value = {
+			...res.data
+		}
+		accountList.value?.forEach((item: accountUserType) => {
+			if (item.id == res.data?.accountId) {
+				accountName.value = item.name as string
+			}
+		})
+	})
 }
 
 
@@ -287,8 +313,8 @@ const handleSelectType = (val: number) => {
 		color.value = getColorByName('red')
 	}
 }
-const handleSelectIcon = (item: payTypeType, index: number) => {
- selectIndex.value = index
+const handleSelectIcon = (item: payTypeType) => {
+ selectIndex.value = item.id as number
  payIncome.value.payTypeId = item.id;
 }
 </script>

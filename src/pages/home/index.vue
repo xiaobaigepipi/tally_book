@@ -14,12 +14,12 @@
 			/>
 			<view :style="{'height': safeTop + 'px'}"></view>
 			<view class="tw-flex tw-justify-start tw-items-center tw-relative tw-z-10 tw-pt-[30rpx] tw-pb-[30rpx]" @click="toLedger">
-				<tm-text color="white" :fontSize="36">{{ defaultLedger?.name }}</tm-text>
+				<tm-text color="white" :fontSize="36">{{ ledger?.name }}</tm-text>
 				<tm-icon :followTheme="false" color="white" class="tw-ml-1 tw-mt-[5rpx]" name="tmicon-waiting-fill" :fontSize="34"></tm-icon>
 			</view>
 			<view class="tw-z-10 tw-relative tw-flex tw-justify-between">
 				<view class="tw-flex tw-justify-center tw-items-center" @click="showDate = true">
-					<tm-text color="white">{{ dateModel.substring(0, 7).replace('/', '-') }}</tm-text>
+					<tm-text color="white" :label="dateModel.substring(0, 7).replace('/', '-')"></tm-text>
 					<tm-icon :followTheme="false" color="white" class="tw-ml-1" name="tmicon-angle-down" :fontSize="24"></tm-icon>
 				</view>
 				<view class="tw-flex tw-justify-center tw-items-center" @click="toCalendarPage">
@@ -78,7 +78,7 @@
 		<tm-divider align="center"></tm-divider>
 
 		<view v-for="(secondItem, secondIndex) in item.children" :key="secondIndex">
-			<view class="tw-flex tw-justify-between tw-items-center tw-mb-[16rpx]">
+			<view class="tw-flex tw-justify-between tw-items-center tw-mb-[16rpx]" @click="toAddPage(secondItem)">
 				<view class="flex tw-justify-start tw-items-center">
 					<view
 						class="tw-bg-green tw-w-[12rpx] tw-h-[12rpx] tw-rounded tw-mr-2"
@@ -89,11 +89,12 @@
 						v-if="secondItem.amount as number >=0"
 					></view>
 					<view>
+						<tm-text class="">{{ secondItem.payTypeName }}</tm-text>
 						<view class="flex tw-justify-start tw-items-center">
-							<tm-text class="">{{ secondItem.payTypeName }}</tm-text>
-							<tm-text :font-size="24" _class="text-gray " v-if="secondItem.accountName"> --{{ secondItem.accountName }}</tm-text>
+							<tm-text :font-size="24" _class=" !tw-text-[#8c8c8c]" v-if="secondItem.accountName">{{ secondItem.accountName }}</tm-text>
+							<tm-text v-if="secondItem.accountName && secondItem.remark" _class=" !tw-text-[#8c8c8c]">-</tm-text>
+							<tm-text :font-size="24" _class="!tw-text-[#bfbfbf]" v-if="secondItem.remark">{{ secondItem.remark }}</tm-text>
 						</view>
-						<tm-text :font-size="24" _class="text-gray">{{ secondItem.remark }}</tm-text>
 					</view>
 				</view>
 				<view class="tw-text-green tw-text-sm" v-if="secondItem.amount as number < 0"
@@ -133,7 +134,7 @@ import useBar from './useBar'
 import { getPayIncomeList } from '@/api/payIncome/index'
 import { payIncomAllType, payIncomeType} from '@/types/user'
 import { getThemeColor, getColorByName } from "@/utils/theme";
-import { useDefaultLedger } from '@/pages/hooks/useDefaultLedger'
+import { useAppStore } from '@/store/app'
 import * as dayjs from "@/tmui/tool/dayjs/esm/index"
 import isoWeek from "@/tmui/tool/dayjs/esm/plugin/isoWeek/index"
 
@@ -141,7 +142,7 @@ const chartDom = ref<InstanceType<typeof tmChart>>();
 
 const DayJs = dayjs.default;
 DayJs.extend(isoWeek);
-const { defaultLedger } = useDefaultLedger()
+const { ledger } = useAppStore()
 
 const color = computed(() => {
 	return getThemeColor()
@@ -197,7 +198,12 @@ const allPayIncome = ref<payIncomAllType>()
 const { defaultConfig }  = useBar();
 
 const init = () => {
-	getPayIncomeList({payDate: DayJs(dateModel.value).format('YYYY-MM-DD HH:mm:ss')}).then( res => {
+	getPayIncomeList(
+		{
+			payDate: DayJs(dateModel.value).format('YYYY-MM-DD HH:mm:ss'),
+			ledgerId: ledger.id
+		}
+	).then( res => {
 		allPayIncome.value = res.data;
 		setChart(res.data?.children, '1', 'green')
 	})
@@ -240,6 +246,12 @@ const handleChartData = (list: Array<payIncomeType> | undefined, type: string) :
 
 const changeChart = (val: any) => {
 	setChart(allPayIncome.value?.children, val, val === '2'? 'red': 'green')
+}
+
+const toAddPage = (item: payIncomeType) => {
+	uni.navigateTo({
+		url: '/pages/addPage/index?id=' + item.id
+	})
 }
 
 onMounted(() => {

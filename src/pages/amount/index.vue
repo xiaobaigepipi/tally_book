@@ -3,7 +3,7 @@
 		<tm-sheet :height="180 + (safeTop*2)" :transprent="isDark === true" :margin="[0, 0]" :padding="[0,0]" :color="isDark?'':color" :linear="isDark?'':'bottom'">
 			<view :style="{'height':safeTop  + 'px'}"></view>
 			<view class=" tw-px-[32rpx] tw-py-[20rpx]">
-				<tm-text :font-size="36">{{ defaultLedger?.name }}</tm-text>
+				<tm-text :font-size="36">{{ ledger?.name }}</tm-text>
 			</view>
 		</tm-sheet>
 	</view>
@@ -43,7 +43,7 @@
 
 		<view v-for="(secondItem, secondIndex) in item.children" :key="secondIndex">
 			<view v-for="(sitem) in secondItem.children" :key="sitem.id" @click="toAddPage(sitem)">
-				<view class="tw-flex tw-justify-between tw-items-center tw-mb-2">
+				<view class="tw-flex tw-justify-between tw-items-center tw-mb-3">
 				<view class="flex tw-justify-start tw-items-center">
 					<view>
 						<text-icon :text="secondItem.name" :color="secondItem.color"></text-icon>
@@ -53,7 +53,7 @@
 						<tm-text :font-size="18" _class="text-gray tw-mt-[4rpx]" v-if="sitem.remark">{{ sitem.remark }}</tm-text>
 					</view>
 				</view>
-				<view class="tw-text-sm" v-if="(sitem.balance as number) > 0">{{ sitem.balance }}</view>
+				<tm-text :font-size="28" v-if="(sitem.balance as number) > 0">{{ sitem.balance }}</tm-text>
 				<view class="tw-text-green tw-text-sm" v-else>{{ sitem.balance }}</view>
 				</view>
 			</view>
@@ -68,13 +68,13 @@ import tmSheet from "@/tmui/components/tm-sheet/tm-sheet.vue";
 import tmText from "@/tmui/components/tm-text/tm-text.vue";
 import tmDivider from "@/tmui/components/tm-divider/tm-divider.vue";
 import TextIcon from '@/components/text-icon/index.vue'
-import { useDefaultLedger } from "../hooks/useDefaultLedger";
+import { useAppStore } from "@/store/app";
 import tmButton from "@/tmui/components/tm-button/tm-button.vue";
 import {getUserAccountList} from '@/api/user/index'
 import { accountCategoryType } from "@/types/user";
 
 
-const { defaultLedger }  = useDefaultLedger();
+const { ledger }  = useAppStore();
 const isDark = computed(() => {
 	return getIsDark()
 })
@@ -98,7 +98,7 @@ defineProps({
 const toAddPage = (item: any) => {
 	console.log(item)
 	const url = ('/pages/amount/addAmount') + (item.id?("?accountId="+item.id) : '');
-	console.log(url)
+	// console.log(url)
 	uni.navigateTo({
 		url: url
 	})
@@ -108,10 +108,9 @@ onMounted(() => {
 })
 
 const init = () => {
-	getUserAccountList(defaultLedger.value.id as number).then(res => {
+	getUserAccountList(ledger.id as number).then(res => {
 		accountList.value = res.data?.children
 		sum.value = res.data?.amount as number
-		console.log(sum.value)
 	})
 }
 </script>

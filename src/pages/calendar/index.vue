@@ -44,7 +44,7 @@
 						</view>
 					</view>
 					<view class="tw-text-green tw-text-sm" v-if="secondItem.amount as number < 0"
-						>-{{ secondItem?.amount?.toFixed(2) }}</view
+						>{{ secondItem?.amount?.toFixed(2) }}</view
 					>
 					<view class="tw-text-red tw-text-sm" v-if="secondItem.amount as number >= 0"
 						>+{{ secondItem.amount?.toFixed(2) }}</view
@@ -69,11 +69,13 @@ import * as dayjs from "@/tmui/tool/dayjs/esm/index"
 import isoWeek from "@/tmui/tool/dayjs/esm/plugin/isoWeek/index"
 import tmDivider from "@/tmui/components/tm-divider/tm-divider.vue";
 import { onLoad } from "@dcloudio/uni-app";
+import { useAppStore } from "@/store/app";
+
 const DayJs = dayjs.default;
 DayJs.extend(isoWeek);
 
 const date = ref([DayJs(new Date()).format('YYYY-MM-DD')]);
-
+const useApp = useAppStore()
 
 const selectData = ref<payIncomeType>();
 const dateStyle: any = ref([]);
@@ -81,7 +83,12 @@ const dateStyle: any = ref([]);
 const allPayIncome = ref<payIncomAllType>()
 const init = (val: string | Date) => {
 	dateStyle.value = [];
-	getPayIncomeList({payDate: DayJs(val).format('YYYY-MM-DD HH:mm:ss')}).then( res => {
+	getPayIncomeList(
+		{
+			payDate: DayJs(val).format('YYYY-MM-DD HH:mm:ss'),
+			ledgerId: useApp.$state.ledger.id
+		}
+	).then( res => {
 		allPayIncome.value = res.data;
 
 		if (allPayIncome.value?.children) {

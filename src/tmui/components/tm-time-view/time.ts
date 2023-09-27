@@ -159,8 +159,6 @@ export function getNowbyIndex(tmArray: timeArrayType, nowIndex: Array<number>, d
 		minute
 		+ ":" +
 		second
-
-	console.log(str)
 	return DayJs(str).format("YYYY/MM/DD HH:mm:ss")
 }
 /**

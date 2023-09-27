@@ -47,7 +47,7 @@ const beforeRequest = (opions: requestOptionsType): Promise<requestOptionsType> 
 		if (!opions.url) {
 			reject('error')
 		}
-		console.log('request:', allOptions)
+		// console.log('request:', allOptions)
 		showLoading();
 		loadNumber++;
 		resolve(allOptions)
@@ -55,7 +55,7 @@ const beforeRequest = (opions: requestOptionsType): Promise<requestOptionsType> 
 }
 
 const afterRequest = <T>(res: any): Promise<responseType<T>> => {
-	console.log('response:', res)
+	// console.log('response:', res)
 	return new Promise((resolve, reject) => {
 		loadNumber--;
 		hideLoading();

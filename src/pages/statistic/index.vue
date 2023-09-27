@@ -4,11 +4,11 @@
 			<tm-sheet  :margin="[0, 0]" :padding="[0,0]" :color="isDark?'#000000':color" :linear="isDark?'':'top'">
 				<view :style="{'height':safeTop  + 'px'}"></view>
 				<view class=" tw-px-[32rpx] tw-py-[20rpx]">
-					<tm-text :font-size="36">{{ defaultLedger?.name }}</tm-text>
+					<tm-text :font-size="36">{{ ledger?.name }}</tm-text>
 					<view class=" tw-flex tw-justify-between tw-items-center tw-pt-[30rpx]  tw-pb-[10rpx]">
 						<tm-segtab v-model="tabVal" :list="list" @change="changeChart" :height="54"  :round="24" :font-size="28" :gutter="4" :color="color" bgColor="white" activeColor="white" :width="200" default-value="0"></tm-segtab>
 						<view class="tw-flex tw-justify-center tw-items-center" @click="showDate = true">
-							<tm-text color="white">{{ dateModel.substring(0, 7).replace('/', '-') }}</tm-text>
+							<tm-text color="white" :label="dateModel.substring(0, 7).replace('/', '-')"></tm-text>
 							<tm-icon class="tw-ml-1" name="tmicon-angle-down" :fontSize="24"></tm-icon>
 						</view>
 					</view>
@@ -39,16 +39,20 @@
 			</view>
 		</tm-sheet>
 		<tm-sheet :margin="[32, 0]" :padding="[0,30]" :round="5">
-			<view class="tw-flex tw-justify-center">
+			<view class=" tw-flex tw-justify-center">
+				<tm-segtab @change="changeChartPay"  :round="24" :gutter="2" :height="52" :width="200" :color="color" activeColor="white" :font-size="24" :list="listPay" defaultValue="1"></tm-segtab>
+			</view>
+			<view class="tw-flex tw-justify-center tw-p-2">
 				<tm-text :font-size="28" _class="tw-font-bold">分类统计</tm-text>
 			</view>
 			<view class=" tw-flex tw-justify-center tw-pt-2 tw-z-1 tw-relative">
-				<tm-chart ref="chartDom" :width="660"  :height="400"></tm-chart>
+				<tm-chart ref="chartDom" :width="660"  :height="500"></tm-chart>
 			</view>
 			<view class=" tw-px-5 tw-pt-5">
 				<view v-for="(item, index) in allPayIncome?.children" :key="index">
-					<view class=" tw-flex tw-justify-start tw-items-center tw-py-1" v-if="item.payIncome ==='1'">
-						<view>
+					<view class=" tw-flex tw-justify-start tw-items-center tw-py-1" v-if="item.payIncome === payType">
+						<text-icon :text="item.payTypeName" :color="item.color" :size="66"></text-icon>
+						<view class=" tw-ml-2">
 							<view class="tw-flex tw-justify-between tw-items-center">
 								<view class="tw-flex tw-justify-start">
 									<tm-text :font-size="26">{{ item.payTypeName }}</tm-text>
@@ -56,7 +60,7 @@
 								</view>
 								<tm-text :font-size="24">{{ item.amount }}</tm-text>
 							</view>
-							<tm-progress :width="600" :height="16" :color="item.color" followTheme="false" :percent="caculatePercent(item.amount as number)"></tm-progress>
+							<tm-progress :width="520" :height="16" :color="item.color" followTheme="false" :percent="caculatePercent(item.amount as number)"></tm-progress>
 						</view>
 					</view>
 				</view>
@@ -93,28 +97,35 @@ import { getPayIncomeListByType } from '@/api/payIncome/index'
 import { payIncomAllType, payIncomeType} from '@/types/user'
 import tmProgress from "@/tmui/components/tm-progress/tm-progress.vue";
 import { useTmpiniaStore } from '@/tmui/tool/lib/tmpinia'
-import { useDefaultLedger } from "../hooks/useDefaultLedger";
+import { useAppStore } from "@/store/app";
 import * as dayjs from "@/tmui/tool/dayjs/esm/index"
 import isoWeek from "@/tmui/tool/dayjs/esm/plugin/isoWeek/index"
+import TextIcon from '@/components/text-icon/index.vue'
 
 const chartDom = ref<InstanceType<typeof tmChart>>();
 
 const DayJs = dayjs.default;
 DayJs.extend(isoWeek);
 
-const { defaultLedger } = useDefaultLedger()
+const { ledger } = useAppStore()
 
 const isDark = computed(() => {
 	return useTmpiniaStore().$state.tmStore.dark === true
 })
 
-const tabVal = ref(0)
+const tabVal = ref('0')
+const payType = ref('1')
 const color = computed(() => {
 	return getThemeColor()
 })
 const list = ref([
 	{ text: '月', id: '0' },
 	{ text: '年', id: '1' }
+])
+
+const listPay = ref([
+	{ text: '支出', id: '1' },
+	{ text: '收入', id: '2' },
 ])
 
 defineProps({
@@ -128,7 +139,9 @@ const showDate = ref<boolean>(false);
 const dateModel = ref<string>(DayJs(new Date()).format('YYYY/MM'));
 const changeDateSelect = (date: any) => {
 	dateModel.value = date
-	init();
+	if (tabVal.value == '0') {
+		init();
+	}
 }
 
 const { defaultConfig } = usePie()
@@ -136,10 +149,15 @@ const allPayIncome = ref<payIncomAllType>()
 const init = () => {
 	getPayIncomeListByType({
 		payDate: DayJs(dateModel.value).format('YYYY-MM-DD HH:mm:ss'),
-		year: tabVal.value == 1
+		year: tabVal.value == '1',
+		ledgerId: ledger.id
 	}).then( res => {
 		allPayIncome.value = res.data;
-		setChart(allPayIncome.value?.children || [], allPayIncome.value?.paySum || 0, '1')
+		if (payType.value === '1') {
+			setChart(allPayIncome.value?.children || [], allPayIncome.value?.paySum || 0, '1')
+		} else {
+			setChart(allPayIncome.value?.children || [], allPayIncome.value?.incomeSum || 0, '2')
+		}
 	})
 }
 
@@ -183,16 +201,28 @@ const changeChart = (val: any) => {
 	tabVal.value = val
 	init()
 }
+const changeChartPay = (val: any) => {
+	payType.value = val;
+	if (payType.value === '1') {
+		setChart(allPayIncome.value?.children || [], allPayIncome.value?.paySum || 0, '1')
+	} else {
+		setChart(allPayIncome.value?.children || [], allPayIncome.value?.incomeSum || 0, '2')
+	}
+}
 
 onMounted(() => {
 	init()
 })
 
 const caculatePercent = (num: number): number => {
-
-	const all = allPayIncome.value?.paySum as number;
-	// console.log(num/all)
-	return Number((Math.abs(num)/Math.abs(all)).toFixed(2)) * 100
+	let all: number = 0;
+	if (payType.value === '1') {
+		all = allPayIncome.value?.paySum as number;
+	} else {
+		all = allPayIncome.value?.incomeSum as number;
+	}
+	const sum = Math.abs(num)/Math.abs(all);
+	return Number((sum * 100).toFixed(0))
 }
 </script>
 

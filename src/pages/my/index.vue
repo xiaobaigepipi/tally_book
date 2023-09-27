@@ -31,7 +31,7 @@
 		</tm-cell>
 	</tm-sheet>
 	<view class="tw-m-[32rpx] tw-mt-5">
-		<tm-button block label="退出"></tm-button>
+		<tm-button block label="退出" @click="handleLoginOut"></tm-button>
 	</view>
 	<tm-drawer ref="calendarView" placement="bottom" v-model:show="showWin" :round="3" okText="确认" @ok="changeTheme">
 		<theme v-model="selectColor"></theme>
@@ -70,6 +70,13 @@ const toLedgerPage = (url: string) => {
 	uni.navigateTo({
 		url: url
 	})
+}
+
+const handleLoginOut = () => {
+	uni.navigateTo({
+		url: '/pages/login/index'
+	})
+	uni.removeStorageSync('token')
 }
 
 

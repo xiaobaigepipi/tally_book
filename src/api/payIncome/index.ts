@@ -14,7 +14,8 @@ import { payIncomeType, payIncomAllType } from '@/types/user'
 
 interface payType {
 	payDate?: string,
-	year?: boolean
+	year?: boolean,
+	ledgerId?: number | string
 }
 /**
  *修改用户账本
@@ -34,6 +35,17 @@ interface payType {
 	return request<payIncomAllType>({
 		url: '/book/cusPayIncome/getPayIncomeByPayType',
 		method: 'POST',
+		data
+	})
+}
+
+/**
+ *获取收支信息
+ */
+ export const getPayIncomeInfo = (data: payIncomeType) => {
+	return request<payIncomeType>({
+		url: '/book/cusPayIncome/info',
+		method: 'GET',
 		data
 	})
 }

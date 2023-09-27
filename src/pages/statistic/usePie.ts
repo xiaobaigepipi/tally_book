@@ -30,7 +30,7 @@ const insertColor = () => {
 
 const defaultConfig: any = {
 	title: {
-		text: '总共\n3403',
+		text: '',
 		left: 'center',
 		top: 'center',
 		textStyle: {
@@ -38,37 +38,34 @@ const defaultConfig: any = {
 			lineHeight: 16,
 		},
 	},
+	tooltip: {
+    trigger: 'item',
+    formatter: function (d: any) {
+			return d.name + ' ' + Math.round(d.percent) + '%'
+		},
+  },
 	series: [
 		{
-			name: '',
 			type: 'pie',
-			radius: ['40%', '80%'],
+			radius: ['30%', '60%'],
 			center: ['50%', '50%'],
+			emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      },
 			label: {
-				alignTo: 'labelLine',
 				formatter: function (d: any) {
-					return d.name + '\n' + Math.round(d.percent) + '%'
+					return d.name + ' ' + Math.round(d.percent) + '%'
 				},
-				minMargin: 5,
-				edgeDistance: 10,
-				lineHeight: 15,
-				position: 'outside',
-				rich: {
-					time: {
-						fontSize: 10,
-						color: '#999',
-					},
-					name: {
-						fontSize: 10,
-						color: '#999',
-					},
-				},
+				padding: [0, -10 ], 
+				fontSize: 10,
 			},
-			labelLine: {
+			labelLine:{
 				show: true,
-				length: 0,
-				length2: 0,
-				maxSurfaceAngle: 80,
+				length: 15, //调整上下位置
 			},
 			data: [
 				{ name: '圣彼得', value: 0.6, itemStyle: {} },
